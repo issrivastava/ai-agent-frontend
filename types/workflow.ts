@@ -24,3 +24,14 @@ export type Workflow = {
 
 // What the create/edit form sends. The server adds id and updatedAt.
 export type WorkflowInput = Omit<Workflow, 'id' | 'updatedAt'>;
+
+export const availableTools = [
+  'ticket_lookup',
+  'assign_ticket',
+  'invoice_search',
+  'refund_api',
+  'email_sender',
+  'pdf_reader',
+  'ocr',
+  'slot_search',
+] as const;
