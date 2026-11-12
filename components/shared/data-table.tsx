@@ -41,6 +41,7 @@ type DataTableProps<TData, TValue> = {
   emptyDescription?: string;
   pageSize?: number;
   toolbar?: React.ReactNode; // extra filters/buttons rendered next to the search box
+  onRowClick?: (row: TData) => void;
 };
 
 export function DataTable<TData, TValue>({
@@ -54,6 +55,7 @@ export function DataTable<TData, TValue>({
   emptyDescription = 'Try changing your search or filters.',
   pageSize = 10,
   toolbar,
+  onRowClick,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState('');
@@ -114,7 +116,11 @@ export function DataTable<TData, TValue>({
             <TableBody>
               {rows.length > 0 &&
                 rows.map((row) => (
-                  <TableRow key={row.id}>
+                  <TableRow
+                    key={row.id}
+                    onClick={onRowClick ? () => onRowClick(row.original) : undefined}
+                    className={onRowClick ? 'cursor-pointer' : undefined}
+                  >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}

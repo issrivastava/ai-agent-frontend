@@ -3,6 +3,7 @@ import './globals.css';
 import { QueryProvider } from '@/providers/query-provider';
 import { ThemeProvider } from '@/providers/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
+import { MswProvider } from '@/providers/msw-provider';
 
 export const metadata: Metadata = {
   title: 'AI Agent Platform',
@@ -14,7 +15,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen bg-background text-foreground antialiased">
         <ThemeProvider>
-          <QueryProvider>{children}</QueryProvider>
+          <MswProvider>
+            <QueryProvider>{children}</QueryProvider>
+          </MswProvider>`
           <Toaster richColors />
         </ThemeProvider>
       </body>

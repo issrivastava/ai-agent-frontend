@@ -48,9 +48,15 @@
     "eslint-config-next": "16.4.5",
     "husky": "^9.1.7",
     "lint-staged": "^17.6.0",
+    "msw": "^2.15.0",
     "prettier": "^3.9.10",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
