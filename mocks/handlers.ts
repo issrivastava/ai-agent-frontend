@@ -1,3 +1,4 @@
+import { runHandlers } from './run-handlers';
 import { workflowHandlers } from './workflow-handlers';
 import { delay, http, HttpResponse } from 'msw';
 import type { Ticket } from '@/types/ticket';
@@ -39,4 +40,5 @@ export const handlers = [
     return HttpResponse.json(ticket);
   }),
   ...workflowHandlers,
+  ...runHandlers,
 ];

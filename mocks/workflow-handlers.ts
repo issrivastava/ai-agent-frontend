@@ -1,3 +1,4 @@
+import { createRun } from './run-store';
 import { delay, http, HttpResponse } from 'msw';
 import type { Workflow, WorkflowInput } from '@/types/workflow';
 
@@ -40,7 +41,6 @@ const workflows: Workflow[] = [
 ];
 
 let nextWorkflow = 4;
-let nextRun = 101;
 
 export const workflowHandlers = [
   http.get(`${API}/workflows`, async () => {
@@ -92,6 +92,7 @@ export const workflowHandlers = [
     if (wf.status !== 'active') {
       return HttpResponse.json({ message: 'Only active workflows can be run' }, { status: 400 });
     }
-    return HttpResponse.json({ runId: `RUN-${nextRun++}` }, { status: 201 });
-  }),
+    const run = createRun(wf);
+    return HttpResponse.json({ runId: run.id }, { status: 201 });
+    }),
 ];
