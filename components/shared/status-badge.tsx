@@ -23,6 +23,8 @@ const statusTone: Record<string, Tone> = {
   escalated: 'danger',
   closed: 'neutral',
   cancelled: 'neutral',
+  queued: 'warning',
+  processing: 'info',
 };
 
 export function StatusBadge({ status }: { status: string }) {
