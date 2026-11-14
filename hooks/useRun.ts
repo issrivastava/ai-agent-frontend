@@ -30,3 +30,17 @@ export function useRunDecision(id: string) {
     onError: (e) => toast.error(getErrorMessage(e, 'Could not submit decision')),
   });
 }
+export function useRuns() {
+  return useQuery({
+    queryKey: ['runs'],
+    queryFn: async () => (await api.get<Run[]>('/runs')).data,
+    // Keep the list fresh while any run is still in progress.
+    refetchInterval: (query) => {
+      if (query.state.status === 'error') return false;
+      const active = query.state.data?.some(
+        (r) => r.status === 'running' || r.status === 'waiting_approval',
+      );
+      return active ? 3000 : false;
+    },
+  });
+}

@@ -1,9 +1,14 @@
 import { delay, http, HttpResponse } from 'msw';
-import { decide, getRun } from './run-store';
+import { decide, getRun, listRuns } from './run-store';
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:5000/api';
 
 export const runHandlers = [
+  http.get(`${API}/runs`, async () => {
+    await delay(400);
+    return HttpResponse.json(listRuns());
+  }),
+
   http.get(`${API}/runs/:id`, async ({ params }) => {
     await delay(200);
     const run = getRun(String(params.id));

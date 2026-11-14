@@ -6,12 +6,17 @@ const RISKY_TOOLS = ['refund_api', 'email_sender'];
 
 type Internal = { run: Run; cursor: number; stepStartedAt: number };
 
-const store = new Map<string, Internal>();
-let counter = 101;
+// Kept on globalThis so hot reloads of this file don't create a second, empty store.
+const g = globalThis as unknown as {
+  __runStore?: Map<string, Internal>;
+  __runCounter?: { value: number };
+};
+const store = (g.__runStore ??= new Map<string, Internal>());
+const counter = (g.__runCounter ??= { value: 101 });
 
 export function createRun(wf: Workflow): Run {
-  const id = `RUN-${counter++}`;
-  const steps: RunStep[] = wf.agents.map((agent, i) => ({
+  const id = `RUN-${counter.value++}`;
+    const steps: RunStep[] = wf.agents.map((agent, i) => ({
     id: `${id}-s${i + 1}`,
     agent: agent.role,
     action: agent.prompt,
@@ -89,3 +94,55 @@ export function decide(id: string, decision: 'approved' | 'rejected'): Run | und
   }
   return i.run;
 }
+
+export function listRuns(): Run[] {
+  const all = [...store.values()].map((i) => {
+    advance(i);
+    return i.run;
+  });
+  return all.sort((a, b) => b.startedAt.localeCompare(a.startedAt));
+}
+
+function seed(
+  id: string,
+  workflowId: string,
+  workflowName: string,
+  status: 'completed' | 'failed',
+  startedAt: string,
+  seconds: number,
+  steps: Pick<RunStep, 'agent' | 'action' | 'tool'>[],
+) {
+  const finishedAt = new Date(new Date(startedAt).getTime() + seconds * 1000).toISOString();
+  const run: Run = {
+    id,
+    workflowId,
+    workflowName,
+    status,
+    startedAt,
+    finishedAt,
+    steps: steps.map((s, i) => {
+      const failedHere = status === 'failed' && i === steps.length - 1;
+      return {
+        id: `${id}-s${i + 1}`,
+        ...s,
+        status: failedHere ? 'failed' : status === 'failed' && i > steps.length - 1 ? 'pending' : 'completed',
+        durationMs: 2500,
+        output: failedHere ? 'Rejected by reviewer.' : `${s.agent} agent finished.`,
+        requiresApproval: false,
+      } satisfies RunStep;
+    }),
+  };
+  store.set(id, { run, cursor: run.steps.length, stepStartedAt: 0 });
+}
+
+seed('RUN-098', 'WF-002', 'Invoice data extraction', 'completed', '2026-11-10T09:15:00.000Z', 8, [
+  { agent: 'extractor', action: 'Extract vendor, date, line items, and total as JSON.', tool: 'pdf_reader' },
+]);
+seed('RUN-099', 'WF-001', 'Support ticket triage', 'completed', '2026-11-11T11:02:00.000Z', 14, [
+  { agent: 'triage', action: 'Classify the ticket by topic and urgency.', tool: 'ticket_lookup' },
+  { agent: 'dispatch', action: 'Assign the ticket to the best available agent.', tool: 'assign_ticket' },
+]);
+seed('RUN-100', 'WF-001', 'Support ticket triage', 'failed', '2026-11-12T14:40:00.000Z', 9, [
+  { agent: 'triage', action: 'Classify the ticket by topic and urgency.', tool: 'ticket_lookup' },
+  { agent: 'billing', action: 'Handle billing and refund questions.', tool: 'refund_api' },
+]);
