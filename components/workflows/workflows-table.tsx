@@ -4,15 +4,19 @@ import { useMemo, useState } from 'react';
 import { ConfirmDialog } from '@/components/shared/confirm-dialog';
 import { DataTable } from '@/components/shared/data-table';
 import { useDeleteWorkflow, useRunWorkflow, useWorkflows } from '@/hooks/useWorkflows';
+import { useAuth } from '@/providers/auth-provider';
 import type { Workflow } from '@/types/workflow';
 import { getWorkflowColumns } from './workflow-columns';
 
 export function WorkflowsTable() {
+  const { can } = useAuth();
   const { data, isLoading, isError, refetch } = useWorkflows();
   const run = useRunWorkflow();
   const remove = useDeleteWorkflow();
   const [deleteTarget, setDeleteTarget] = useState<Workflow | null>(null);
 
+  const canRun = can('workflows:run');
+  const canManage = can('workflows:manage');
   const runningId = run.isPending ? run.variables : undefined;
 
   const columns = useMemo(
@@ -21,9 +25,11 @@ export function WorkflowsTable() {
         onRun: (wf) => run.mutate(wf.id),
         onDelete: setDeleteTarget,
         runningId,
+        canRun,
+        canManage,
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [runningId],
+    [runningId, canRun, canManage],
   );
 
   return (
@@ -36,7 +42,11 @@ export function WorkflowsTable() {
         onRetry={() => refetch()}
         searchPlaceholder="Search workflows…"
         emptyTitle="No workflows yet"
-        emptyDescription="Create your first workflow to start automating."
+        emptyDescription={
+          canManage
+            ? 'Create your first workflow to start automating.'
+            : 'No workflows have been set up yet.'
+        }
       />
       <ConfirmDialog
         open={!!deleteTarget}

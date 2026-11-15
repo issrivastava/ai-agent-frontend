@@ -5,6 +5,7 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { DataTable, SortableHeader } from '@/components/shared/data-table';
 import { StatusBadge } from '@/components/shared/status-badge';
 import { useExtractions, useUploadExtraction } from '@/hooks/useExtractions';
+import { useAuth } from '@/providers/auth-provider';
 import type { ExtractionJob } from '@/types/extraction';
 import { UploadDropzone } from './upload-dropzone';
 
@@ -41,12 +42,19 @@ const columns: ColumnDef<ExtractionJob>[] = [
 
 export function ExtractionsPanel() {
   const router = useRouter();
+  const { can } = useAuth();
   const upload = useUploadExtraction();
   const { data, isLoading, isError, refetch } = useExtractions();
 
   return (
     <div className="space-y-6">
-      <UploadDropzone onFile={(file) => upload.mutate(file)} uploading={upload.isPending} />
+      {can('extractions:upload') ? (
+        <UploadDropzone onFile={(file) => upload.mutate(file)} uploading={upload.isPending} />
+      ) : (
+        <p className="rounded-md border border-dashed p-4 text-sm text-muted-foreground">
+          Your role can view extraction results but not upload documents.
+        </p>
+      )}
       <DataTable
         columns={columns}
         data={data}
@@ -55,7 +63,9 @@ export function ExtractionsPanel() {
         onRetry={() => refetch()}
         searchPlaceholder="Search jobs…"
         emptyTitle="No extraction jobs yet"
-        emptyDescription="Upload a document to start."
+        emptyDescription={
+          can('extractions:upload') ? 'Upload a document to start.' : 'No documents have been processed yet.'
+        }
         onRowClick={(job) => router.push(`/extractions/${job.id}`)}
       />
     </div>

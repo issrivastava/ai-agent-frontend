@@ -15,6 +15,7 @@ import { ErrorState } from '@/components/shared/error-state';
 import { FilterSelect } from '@/components/shared/filter-select';
 import { StatusBadge } from '@/components/shared/status-badge';
 import { useReassignTicket, useTicket } from '@/hooks/useTickets';
+import { useAuth } from '@/providers/auth-provider';
 import { agents, type Ticket } from '@/types/ticket';
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
@@ -27,6 +28,7 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 }
 
 function TicketDetails({ ticket }: { ticket: Ticket }) {
+  const { can } = useAuth();
   const [agent, setAgent] = useState<string>(ticket.assignedAgent);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const reassign = useReassignTicket();
@@ -43,39 +45,43 @@ function TicketDetails({ ticket }: { ticket: Ticket }) {
       <Field label="Description">{ticket.description}</Field>
       <Field label="Assigned agent">{ticket.assignedAgent}</Field>
 
-      <div className="space-y-2 border-t pt-4">
-        <p className="text-sm font-medium">Reassign ticket</p>
-        <div className="flex gap-2">
-          <FilterSelect
-            label="Agents"
-            value={agent}
-            onChange={setAgent}
-            options={agents}
-            className="flex-1"
-          />
-          <Button
-            disabled={agent === 'all' || agent === ticket.assignedAgent || reassign.isPending}
-            onClick={() => setConfirmOpen(true)}
-          >
-            Reassign
-          </Button>
-        </div>
-      </div>
+      {can('tickets:reassign') && (
+        <>
+          <div className="space-y-2 border-t pt-4">
+            <p className="text-sm font-medium">Reassign ticket</p>
+            <div className="flex gap-2">
+              <FilterSelect
+                label="Agents"
+                value={agent}
+                onChange={setAgent}
+                options={agents}
+                className="flex-1"
+              />
+              <Button
+                disabled={agent === 'all' || agent === ticket.assignedAgent || reassign.isPending}
+                onClick={() => setConfirmOpen(true)}
+              >
+                Reassign
+              </Button>
+            </div>
+          </div>
 
-      <ConfirmDialog
-        open={confirmOpen}
-        onOpenChange={setConfirmOpen}
-        title="Reassign this ticket?"
-        description={`${ticket.id} will move from ${ticket.assignedAgent} to ${agent}.`}
-        confirmLabel="Reassign"
-        loading={reassign.isPending}
-        onConfirm={() =>
-          reassign.mutate(
-            { id: ticket.id, assignedAgent: agent },
-            { onSuccess: () => setConfirmOpen(false) },
-          )
-        }
-      />
+          <ConfirmDialog
+            open={confirmOpen}
+            onOpenChange={setConfirmOpen}
+            title="Reassign this ticket?"
+            description={`${ticket.id} will move from ${ticket.assignedAgent} to ${agent}.`}
+            confirmLabel="Reassign"
+            loading={reassign.isPending}
+            onConfirm={() =>
+              reassign.mutate(
+                { id: ticket.id, assignedAgent: agent },
+                { onSuccess: () => setConfirmOpen(false) },
+              )
+            }
+          />
+        </>
+      )}
     </div>
   );
 }

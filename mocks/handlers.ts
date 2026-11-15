@@ -4,6 +4,7 @@ import { delay, http, HttpResponse } from 'msw';
 import type { Ticket } from '@/types/ticket';
 import { initialTickets } from './data';
 import { extractionHandlers } from './extraction-handlers';
+import { authHandlers } from './auth-handlers';
 
 // Must match the base URL your axios client uses.
 const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:5000/api';
@@ -43,4 +44,6 @@ export const handlers = [
   ...workflowHandlers,
   ...runHandlers,
   ...extractionHandlers,
+    ...authHandlers,
+
 ];

@@ -4,13 +4,18 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { navItems } from '@/lib/navigation';
+import { useAuth } from '@/providers/auth-provider';
 
 export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
+  const { can } = useAuth();
+
+  // Hide items the current role can't use (e.g. Settings for non-admins).
+  const items = navItems.filter((item) => !item.permission || can(item.permission));
 
   return (
     <nav className="flex flex-col gap-1 p-3">
-      {navItems.map(({ href, label, icon: Icon }) => {
+      {items.map(({ href, label, icon: Icon }) => {
         const active = href === '/' ? pathname === '/' : pathname.startsWith(href);
         return (
           <Link

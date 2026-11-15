@@ -13,9 +13,17 @@ type Actions = {
   onRun: (wf: Workflow) => void;
   onDelete: (wf: Workflow) => void;
   runningId?: string;
+  canRun: boolean;
+  canManage: boolean;
 };
 
-export function getWorkflowColumns({ onRun, onDelete, runningId }: Actions): ColumnDef<Workflow>[] {
+export function getWorkflowColumns({
+  onRun,
+  onDelete,
+  runningId,
+  canRun,
+  canManage,
+}: Actions): ColumnDef<Workflow>[] {
   return [
     {
       accessorKey: 'name',
@@ -63,21 +71,30 @@ export function getWorkflowColumns({ onRun, onDelete, runningId }: Actions): Col
             <Button
               size="sm"
               variant="outline"
-              disabled={wf.status !== 'active' || runningId === wf.id}
+              disabled={!canRun || wf.status !== 'active' || runningId === wf.id}
               onClick={() => onRun(wf)}
             >
               <Play className="size-3.5" />
               {runningId === wf.id ? 'Starting…' : 'Run'}
             </Button>
-            <Link
-              href={`/workflows/${wf.id}/edit`}
-              className={cn(buttonVariants({ size: 'sm', variant: 'ghost' }))}
-            >
-              Edit
-            </Link>
-            <Button size="sm" variant="ghost" aria-label={`Delete ${wf.name}`} onClick={() => onDelete(wf)}>
-              <Trash2 className="size-4 text-destructive" />
-            </Button>
+            {canManage && (
+              <>
+                <Link
+                  href={`/workflows/${wf.id}/edit`}
+                  className={cn(buttonVariants({ size: 'sm', variant: 'ghost' }))}
+                >
+                  Edit
+                </Link>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  aria-label={`Delete ${wf.name}`}
+                  onClick={() => onDelete(wf)}
+                >
+                  <Trash2 className="size-4 text-destructive" />
+                </Button>
+              </>
+            )}
           </div>
         );
       },

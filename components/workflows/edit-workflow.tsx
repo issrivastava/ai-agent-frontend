@@ -1,11 +1,12 @@
 'use client';
 
+import { RequirePermission } from '@/components/auth/guards';
 import { ErrorState } from '@/components/shared/error-state';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useUpdateWorkflow, useWorkflow } from '@/hooks/useWorkflows';
 import { WorkflowForm } from './workflow-form';
 
-export function EditWorkflow({ id }: { id: string }) {
+function EditWorkflowForm({ id }: { id: string }) {
   const { data, isLoading, isError, refetch } = useWorkflow(id);
   const update = useUpdateWorkflow(id);
 
@@ -25,5 +26,13 @@ export function EditWorkflow({ id }: { id: string }) {
       isSubmitting={update.isPending}
       onSubmit={(values) => update.mutate(values)}
     />
+  );
+}
+
+export function EditWorkflow({ id }: { id: string }) {
+  return (
+    <RequirePermission permission="workflows:manage">
+      <EditWorkflowForm id={id} />
+    </RequirePermission>
   );
 }

@@ -6,6 +6,7 @@ import { WorkflowsTable } from '@/components/workflows/workflows-table';
 import { buttonVariants } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
+import { Can } from '@/components/auth/guards';
 
 export default function WorkflowsPage() {
   return (
@@ -14,10 +15,12 @@ export default function WorkflowsPage() {
         title="Workflows"
         description="Multi-agent workflows for ticket dispatch and data extraction."
         actions={
-          <Link href="/workflows/new" className={cn(buttonVariants())}>
-            <Plus className="size-4" />
-            New workflow
-          </Link>
+          <Can permission="workflows:manage">
+            <Link href="/workflows/new" className={cn(buttonVariants())}>
+              <Plus className="size-4" />
+              New workflow
+            </Link>
+          </Can>
         }
       />
       <Suspense fallback={<Skeleton className="h-96 w-full" />}>
