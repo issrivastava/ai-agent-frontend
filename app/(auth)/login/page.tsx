@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { DemoAccounts } from '@/components/auth/demo-accounts';
 import { Button } from '@/components/ui/button';
 import {
   Card,
