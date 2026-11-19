@@ -1,4 +1,5 @@
-export type Role = 'admin' | 'agent' | 'viewer';
+export const roles = ['admin', 'agent', 'viewer'] as const;
+export type Role = (typeof roles)[number];
 
 export type User = {
   id: string;
