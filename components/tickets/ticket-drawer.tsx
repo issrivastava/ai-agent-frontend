@@ -17,6 +17,7 @@ import { StatusBadge } from '@/components/shared/status-badge';
 import { useReassignTicket, useTicket } from '@/hooks/useTickets';
 import { useAuth } from '@/providers/auth-provider';
 import { agents, type Ticket } from '@/types/ticket';
+import { PriorityBadge } from '../shared/priority-badge';
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -37,8 +38,7 @@ function TicketDetails({ ticket }: { ticket: Ticket }) {
     <div className="space-y-5 px-4 pb-4">
       <div className="flex items-center gap-2">
         <StatusBadge status={ticket.status} />
-        <span className="text-sm capitalize text-muted-foreground">{ticket.priority} priority</span>
-      </div>
+    <PriorityBadge priority={ticket.priority} />      </div>
 
       <Field label="Customer">{ticket.customer}</Field>
       <Field label="Created">{new Date(ticket.createdAt).toLocaleString('en-IN')}</Field>

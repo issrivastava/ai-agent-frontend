@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { NotificationsBell } from './notifications-bell';
 import { SidebarNav } from './sidebar-nav';
 import { ThemeToggle } from './theme-toggle';
+import { UserMenu } from './user-menu';
 
 export function Topbar() {
   const [open, setOpen] = useState(false);
@@ -23,12 +25,10 @@ export function Topbar() {
           <Menu className="size-5" />
         </Button>
         <div className="hidden md:block" />
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
+          <NotificationsBell />
           <ThemeToggle />
-          {/* Replaced with a real user menu once auth is wired up */}
-          <div className="flex size-8 items-center justify-center rounded-full bg-muted text-xs font-medium">
-            U
-          </div>
+          <UserMenu />
         </div>
       </header>
 
