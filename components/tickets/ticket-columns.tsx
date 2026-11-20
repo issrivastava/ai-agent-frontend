@@ -2,8 +2,12 @@
 
 import type { ColumnDef } from '@tanstack/react-table';
 import { SortableHeader } from '@/components/shared/data-table';
+import { PriorityBadge } from '@/components/shared/priority-badge';
 import { StatusBadge } from '@/components/shared/status-badge';
 import type { Ticket } from '@/types/ticket';
+
+// Sorts priorities by severity instead of alphabetically.
+const priorityRank = { low: 0, medium: 1, high: 2, urgent: 3 } as const;
 
 export const ticketColumns: ColumnDef<Ticket>[] = [
   { accessorKey: 'id', header: 'ID' },
@@ -20,7 +24,8 @@ export const ticketColumns: ColumnDef<Ticket>[] = [
   {
     accessorKey: 'priority',
     header: ({ column }) => <SortableHeader column={column} title="Priority" />,
-    cell: ({ row }) => <span className="capitalize">{row.original.priority}</span>,
+    cell: ({ row }) => <PriorityBadge priority={row.original.priority} />,
+    sortingFn: (a, b) => priorityRank[a.original.priority] - priorityRank[b.original.priority],
   },
   { accessorKey: 'assignedAgent', header: 'Agent' },
   {
