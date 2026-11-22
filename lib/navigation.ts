@@ -17,7 +17,7 @@ export type NavItem = {
 };
 
 export const navItems: NavItem[] = [
-  { href: '/', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/tickets', label: 'Tickets', icon: Ticket },
   { href: '/workflows', label: 'Workflows', icon: Workflow },
   { href: '/extractions', label: 'Data extraction', icon: FileSearch },

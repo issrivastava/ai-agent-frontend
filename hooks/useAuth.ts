@@ -12,8 +12,8 @@ export function useLogin() {
   return useMutation({
     mutationFn: async (data: LoginInput) => (await api.post<{ user: User }>('/auth/login', data)).data,
     onSuccess: ({ user }) => {
-      queryClient.setQueryData(['me'], user); // the dashboard needs no extra /me request
-      router.push('/');
+      queryClient.setQueryData(['me'], user);
+      router.push('/dashboard');
       router.refresh();
     },
     onError: (e) => toast.error(getErrorMessage(e, 'Login failed')),
@@ -40,9 +40,8 @@ export function useLogout() {
     mutationFn: async () => {
       await api.post('/auth/logout');
     },
-    // Runs on success or failure, so the user always ends up signed out locally.
     onSettled: () => {
-      queryClient.clear(); // drop cached tickets, runs, and the current user
+      queryClient.clear();
       router.replace('/login');
       router.refresh();
     },
