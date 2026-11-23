@@ -1,11 +1,9 @@
 import { Sidebar } from '@/components/layout/sidebar';
 import { Topbar } from '@/components/layout/topbar';
 import { AuthProvider } from '@/providers/auth-provider';
-import { MswProvider } from '@/providers/msw-provider';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <MswProvider>
       <AuthProvider>
         <div className="flex h-screen overflow-hidden">
           <Sidebar />
@@ -15,6 +13,5 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </div>
         </div>
       </AuthProvider>
-    </MswProvider>
   );
 }
