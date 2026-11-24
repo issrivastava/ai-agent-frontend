@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import { Activity } from 'lucide-react';
 import { PageHeader } from '@/components/layout/page-header';
 import { RunViewer } from '@/components/runs/run-viewer';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -7,7 +8,11 @@ async function RunContent({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   return (
     <>
-      <PageHeader title={`Run ${id}`} description="Live view of what each agent is doing." />
+      <PageHeader
+        icon={Activity}
+        title={`Run ${id}`}
+        description="Live view of what each agent is doing."
+      />
       <RunViewer id={id} />
     </>
   );

@@ -9,8 +9,12 @@ const geistSans = Geist({ subsets: ['latin'] });
 const geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono' });
 
 export const metadata: Metadata = {
-  title: 'AI Agent Platform',
-  description: 'Multi-agent customer support dispatch and data extraction',
+  title: {
+    default: 'AI Agent Platform',
+    template: '%s · AI Agent Platform',
+  },
+  description:
+    'Multi-agent operations for support dispatch, approval-gated actions, and document data extraction.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

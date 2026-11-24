@@ -1,24 +1,58 @@
 'use client';
 
+import Link from 'next/link';
 import { useState } from 'react';
-import { CheckCircle2, Clock, Loader2, ShieldAlert, XCircle } from 'lucide-react';
+import {
+  ArrowLeft,
+  CheckCircle2,
+  Clock,
+  ListChecks,
+  Loader2,
+  ShieldAlert,
+  Wrench,
+  XCircle,
+} from 'lucide-react';
 import { ConfirmDialog } from '@/components/shared/confirm-dialog';
 import { ErrorState } from '@/components/shared/error-state';
 import { StatusBadge } from '@/components/shared/status-badge';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useRun, useRunDecision } from '@/hooks/useRun';
 import { cn } from '@/lib/utils';
-import type { RunStep, StepStatus } from '@/types/run';
+import type { Run, RunStep, StepStatus } from '@/types/run';
 
-const stepIcon = {
-  pending: <Clock className="size-5 text-muted-foreground" />,
-  running: <Loader2 className="size-5 animate-spin text-blue-600" />,
-  waiting_approval: <ShieldAlert className="size-5 text-amber-600" />,
-  completed: <CheckCircle2 className="size-5 text-green-600" />,
-  failed: <XCircle className="size-5 text-destructive" />,
-} satisfies Record<StepStatus, React.ReactNode>;
+const stepMeta: Record<StepStatus, { icon: React.ReactNode; tone: string }> = {
+  pending: {
+    icon: <Clock className="size-4" />,
+    tone: 'bg-muted text-muted-foreground border-border',
+  },
+  running: {
+    icon: <Loader2 className="size-4 animate-spin" />,
+    tone: 'bg-sky-500/10 text-sky-600 border-sky-200 dark:border-sky-900 dark:text-sky-400',
+  },
+  waiting_approval: {
+    icon: <ShieldAlert className="size-4" />,
+    tone: 'bg-amber-500/10 text-amber-600 border-amber-200 dark:border-amber-900 dark:text-amber-400',
+  },
+  completed: {
+    icon: <CheckCircle2 className="size-4" />,
+    tone: 'bg-emerald-500/10 text-emerald-600 border-emerald-200 dark:border-emerald-900 dark:text-emerald-400',
+  },
+  failed: {
+    icon: <XCircle className="size-4" />,
+    tone: 'bg-destructive/10 text-destructive border-destructive/20',
+  },
+};
+
+function formatDuration(run: Run) {
+  if (!run.finishedAt) return 'Live';
+  const seconds = Math.round(
+    (new Date(run.finishedAt).getTime() - new Date(run.startedAt).getTime()) / 1000,
+  );
+  if (seconds < 60) return `${seconds}s`;
+  return `${Math.floor(seconds / 60)}m ${seconds % 60}s`;
+}
 
 function StepCard({
   step,
@@ -35,22 +69,37 @@ function StepCard({
   onApprove: () => void;
   onReject: () => void;
 }) {
+  const meta = stepMeta[step.status];
+
   return (
     <div className="flex gap-3">
       <div className="flex flex-col items-center">
-        <div className="mt-1">{stepIcon[step.status]}</div>
-        {!isLast && <div className="mt-1 w-px flex-1 bg-border" />}
+        <span
+          className={cn(
+            'mt-4 flex size-9 shrink-0 items-center justify-center rounded-full border shadow-sm',
+            meta.tone,
+          )}
+        >
+          {meta.icon}
+        </span>
+        {!isLast && <div className="my-1 w-px flex-1 bg-border" />}
       </div>
 
-      <Card className={cn('mb-4 flex-1', step.status === 'pending' && 'opacity-60')}>
-        <CardContent className="space-y-2">
+      <Card className={cn('mb-4 flex-1', step.status === 'pending' && 'opacity-65')}>
+        <CardContent className="space-y-3">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <p className="font-medium">
-              Step {index + 1}: <span className="capitalize">{step.agent}</span> agent
-            </p>
+            <div className="flex items-center gap-2">
+              <span className="flex size-6 items-center justify-center rounded-md bg-muted text-[10px] font-semibold text-muted-foreground">
+                {index + 1}
+              </span>
+              <p className="text-sm font-medium capitalize">
+                {step.agent} <span className="font-normal text-muted-foreground">agent</span>
+              </p>
+            </div>
             <div className="flex items-center gap-2">
               {step.durationMs !== undefined && (
-                <span className="text-xs text-muted-foreground">
+                <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
+                  <Clock className="size-3" />
                   {(step.durationMs / 1000).toFixed(1)}s
                 </span>
               )}
@@ -59,24 +108,66 @@ function StepCard({
           </div>
 
           <p className="text-sm text-muted-foreground">{step.action}</p>
-          {step.tool && (
-            <p className="text-xs">
-              Tool: <code className="rounded bg-muted px-1.5 py-0.5">{step.tool}</code>
+
+          <div className="flex flex-wrap items-center gap-2">
+            {step.tool && (
+              <span className="inline-flex items-center gap-1.5 rounded-md border bg-muted/60 px-2 py-1 text-[11px] font-medium">
+                <Wrench className="size-3 text-brand-1" />
+                {step.tool}
+              </span>
+            )}
+            {step.requiresApproval && (
+              <span className="inline-flex items-center gap-1 rounded-md border border-amber-200 bg-amber-50 px-2 py-1 text-[11px] font-medium text-amber-700 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-300">
+                <ShieldAlert className="size-3" />
+                Approval gate
+              </span>
+            )}
+            {step.approval && (
+              <span
+                className={cn(
+                  'inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-medium capitalize',
+                  step.approval === 'approved'
+                    ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300'
+                    : 'bg-destructive/10 text-destructive',
+                )}
+              >
+                {step.approval}
+              </span>
+            )}
+          </div>
+
+          {step.output && (
+            <p className="rounded-lg border bg-muted/40 p-2.5 text-sm leading-relaxed whitespace-pre-wrap">
+              {step.output}
             </p>
           )}
-          {step.output && <p className="rounded-md bg-muted p-2 text-sm">{step.output}</p>}
 
           {step.status === 'waiting_approval' && (
-            <div className="space-y-2 rounded-md border border-amber-300 bg-amber-50 p-3 dark:border-amber-800 dark:bg-amber-950/40">
-              <p className="text-sm">
-                This step wants to use <strong>{step.tool}</strong>, which can change customer data.
-                Approve to continue, or reject to stop the run.
-              </p>
-              <div className="flex gap-2">
-                <Button size="sm" disabled={deciding} onClick={onApprove}>
+            <div className="space-y-2.5 rounded-xl border border-amber-300 bg-linear-to-br from-amber-50 to-card p-3 dark:border-amber-800 dark:from-amber-950/40">
+              <div className="flex items-start gap-2">
+                <ShieldAlert className="mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-400" />
+                <p className="text-sm">
+                  This step wants to use{' '}
+                  <code className="rounded bg-card px-1 py-0.5 font-mono text-xs">{step.tool}</code>
+                  , which can change customer data. Approve to continue, or reject to stop the run.
+                </p>
+              </div>
+              <div className="flex gap-2 pl-6">
+                <Button
+                  size="sm"
+                  disabled={deciding}
+                  onClick={onApprove}
+                  className="bg-emerald-600 text-white hover:bg-emerald-600/90"
+                >
+                  {deciding ? (
+                    <Loader2 className="size-3.5 animate-spin" />
+                  ) : (
+                    <CheckCircle2 className="size-3.5" />
+                  )}
                   Approve
                 </Button>
                 <Button size="sm" variant="outline" disabled={deciding} onClick={onReject}>
+                  <XCircle className="size-3.5" />
                   Reject
                 </Button>
               </div>
@@ -114,37 +205,83 @@ export function RunViewer({ id }: { id: string }) {
   }
 
   const done = run.steps.filter((s) => s.status === 'completed').length;
-  const percent = Math.round((done / run.steps.length) * 100);
+  const percent = run.steps.length ? Math.round((done / run.steps.length) * 100) : 0;
   const live = run.status === 'running' || run.status === 'waiting_approval';
+  const toolsUsed = new Set(run.steps.map((step) => step.tool).filter(Boolean)).size;
 
   return (
     <div className="max-w-3xl space-y-6">
-      <Card>
-        <CardContent className="space-y-3">
-          <div className="flex flex-wrap items-center justify-between gap-2">
+      <Link
+        href="/runs"
+        className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), '-ml-3 gap-1.5')}
+      >
+        <ArrowLeft className="size-4" />
+        All runs
+      </Link>
+
+      <Card className="relative overflow-hidden">
+        <div
+          aria-hidden
+          className={cn(
+            'absolute inset-x-0 top-0 h-1',
+            run.status === 'failed' ? 'bg-destructive' : 'bg-brand-gradient',
+          )}
+        />
+        <CardContent className="space-y-4">
+          <div className="flex flex-wrap items-start justify-between gap-2">
             <div>
-              <p className="font-semibold">{run.workflowName}</p>
-              <p className="text-xs text-muted-foreground">
-                {run.id} · started {new Date(run.startedAt).toLocaleTimeString('en-IN')}
+              <p className="text-base font-semibold">{run.workflowName}</p>
+              <p className="mt-0.5 text-xs text-muted-foreground">
+                {run.id} · started {new Date(run.startedAt).toLocaleString('en-IN')}
               </p>
             </div>
             <div className="flex items-center gap-2">
-              {live && <span className="text-xs text-muted-foreground">Updating live…</span>}
+              {live && (
+                <span className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                  <span className="relative flex size-1.5">
+                    <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-500 opacity-60" />
+                    <span className="relative inline-flex size-1.5 rounded-full bg-emerald-500" />
+                  </span>
+                  Updating live
+                </span>
+              )}
               <StatusBadge status={run.status} />
             </div>
           </div>
+
           <div className="h-2 overflow-hidden rounded-full bg-muted">
             <div
               className={cn(
-                'h-full transition-all',
-                run.status === 'failed' ? 'bg-destructive' : 'bg-primary',
+                'h-full rounded-full transition-all duration-500',
+                run.status === 'failed' ? 'bg-destructive' : 'bg-brand-gradient',
               )}
               style={{ width: `${percent}%` }}
             />
           </div>
-          <p className="text-xs text-muted-foreground">
-            {done} of {run.steps.length} steps completed
-          </p>
+
+          <div className="grid grid-cols-3 gap-2 text-center">
+            <div className="rounded-lg border bg-muted/30 px-2 py-2">
+              <p className="flex items-center justify-center gap-1 text-sm font-semibold">
+                <ListChecks className="size-3.5 text-brand-1" />
+                {done}/{run.steps.length}
+              </p>
+              <p className="text-[10px] text-muted-foreground">steps completed</p>
+            </div>
+            <div className="rounded-lg border bg-muted/30 px-2 py-2">
+              <p className="flex items-center justify-center gap-1 text-sm font-semibold">
+                <Wrench className="size-3.5 text-brand-1" />
+                {toolsUsed}
+              </p>
+              <p className="text-[10px] text-muted-foreground">tools used</p>
+            </div>
+            <div className="rounded-lg border bg-muted/30 px-2 py-2">
+              <p className="flex items-center justify-center gap-1 text-sm font-semibold">
+                <Clock className="size-3.5 text-brand-1" />
+                {formatDuration(run)}
+              </p>
+              <p className="text-[10px] text-muted-foreground">duration</p>
+            </div>
+          </div>
         </CardContent>
       </Card>
 

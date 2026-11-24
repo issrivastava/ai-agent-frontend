@@ -12,6 +12,7 @@ export function NewWorkflow() {
         submitLabel="Create workflow"
         isSubmitting={create.isPending}
         onSubmit={(values) => create.mutate(values)}
+        showTemplates
       />
     </RequirePermission>
   );

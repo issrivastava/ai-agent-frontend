@@ -10,6 +10,10 @@
   --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
+  --color-brand-1: var(--brand-1);
+  --color-brand-2: var(--brand-2);
+  --color-brand-3: var(--brand-3);
+  --color-brand-soft: var(--brand-soft);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -49,82 +53,360 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  /* Warm Chalk & Botanical Stone Neutrals (Hue ~115–130) */
+  --background: oklch(0.978 0.006 120);
+  --foreground: oklch(0.21 0.018 150);
+  --card: oklch(0.996 0.003 120);
+  --card-foreground: oklch(0.21 0.018 150);
+  --popover: oklch(0.996 0.003 120);
+  --popover-foreground: oklch(0.21 0.018 150);
+
+  /* Deep Forest / Eucalyptus Primary (Hue ~155) */
+  --primary: oklch(0.45 0.095 155);
+  --primary-foreground: oklch(0.985 0.005 120);
+
+  /* Soft Sage Mist & Linen Surfaces */
+  --secondary: oklch(0.942 0.014 135);
+  --secondary-foreground: oklch(0.26 0.025 150);
+  --muted: oklch(0.945 0.012 130);
+  --muted-foreground: oklch(0.48 0.02 145);
+
+  /* Pale Sage Hover & Tag Tint */
+  --accent: oklch(0.928 0.022 145);
+  --accent-foreground: oklch(0.3 0.065 155);
+
+  --destructive: oklch(0.55 0.21 26);
+  --border: oklch(0.888 0.015 135);
+  --input: oklch(0.878 0.016 135);
+  --ring: oklch(0.45 0.095 155);
+
+  /* Botanical Brand Accents: Forest Pine -> Moss Sage -> Warm Olive/Brass */
+  --brand-1: oklch(0.45 0.095 155);
+  --brand-2: oklch(0.56 0.085 142);
+  --brand-3: oklch(0.66 0.11 95);
+  --brand-soft: oklch(0.94 0.022 145);
+
+  /* Earthy Botanical Chart Palette */
+  --chart-1: oklch(0.45 0.095 155);
+  --chart-2: oklch(0.62 0.09 135);
+  --chart-3: oklch(0.68 0.12 88);
+  --chart-4: oklch(0.55 0.12 42);
+  --chart-5: oklch(0.52 0.075 195);
+
+  --radius: 0.65rem;
+
+  --sidebar: oklch(0.966 0.009 128);
+  --sidebar-foreground: oklch(0.23 0.018 150);
+  --sidebar-primary: oklch(0.45 0.095 155);
+  --sidebar-primary-foreground: oklch(0.985 0.005 120);
+  --sidebar-accent: oklch(0.928 0.022 145);
+  --sidebar-accent-foreground: oklch(0.3 0.065 155);
+  --sidebar-border: oklch(0.888 0.015 135);
+  --sidebar-ring: oklch(0.45 0.095 155);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* Deep Pine & Dark Moss Neutrals (Hue ~148–155) */
+  --background: oklch(0.165 0.014 152);
+  --foreground: oklch(0.945 0.01 125);
+  --card: oklch(0.205 0.017 152);
+  --card-foreground: oklch(0.945 0.01 125);
+  --popover: oklch(0.21 0.018 152);
+  --popover-foreground: oklch(0.945 0.01 125);
+
+  /* Soft Sage / Lichen Primary */
+  --primary: oklch(0.69 0.1 150);
+  --primary-foreground: oklch(0.16 0.02 152);
+
+  --secondary: oklch(0.255 0.02 150);
+  --secondary-foreground: oklch(0.93 0.01 125);
+  --muted: oklch(0.245 0.018 150);
+  --muted-foreground: oklch(0.69 0.018 138);
+
+  --accent: oklch(0.28 0.032 150);
+  --accent-foreground: oklch(0.92 0.024 142);
+
+  --destructive: oklch(0.66 0.18 25);
+  --border: oklch(0.92 0.015 135 / 11%);
+  --input: oklch(0.92 0.015 135 / 15%);
+  --ring: oklch(0.69 0.1 150);
+
+  /* Botanical Dark Brand Accents */
+  --brand-1: oklch(0.69 0.1 150);
+  --brand-2: oklch(0.74 0.085 135);
+  --brand-3: oklch(0.76 0.11 95);
+  --brand-soft: oklch(0.25 0.032 150);
+
+  --chart-1: oklch(0.69 0.1 150);
+  --chart-2: oklch(0.74 0.085 135);
+  --chart-3: oklch(0.76 0.11 95);
+  --chart-4: oklch(0.68 0.12 45);
+  --chart-5: oklch(0.66 0.08 195);
+
+  --sidebar: oklch(0.185 0.015 152);
+  --sidebar-foreground: oklch(0.93 0.01 125);
+  --sidebar-primary: oklch(0.69 0.1 150);
+  --sidebar-primary-foreground: oklch(0.16 0.02 152);
+  --sidebar-accent: oklch(0.26 0.026 150);
+  --sidebar-accent-foreground: oklch(0.94 0.015 140);
+  --sidebar-border: oklch(0.92 0.015 135 / 10%);
+  --sidebar-ring: oklch(0.69 0.1 150);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    @apply scroll-smooth font-sans;
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
   body {
     @apply bg-background text-foreground;
+    text-rendering: optimizeLegibility;
   }
+  ::selection {
+    background: color-mix(in oklab, var(--primary) 22%, transparent);
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background-clip: content-box;
+    background-color: color-mix(in oklab, var(--foreground) 18%, transparent);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: color-mix(in oklab, var(--foreground) 30%, transparent);
+  }
+}
+
+/* ---------- Brand surfaces & decoration ---------- */
+
+/* Deep pine to moss shift — grounded and natural */
+.text-gradient {
+  background-image: linear-gradient(115deg, var(--brand-1) 0%, var(--brand-2) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.bg-brand-gradient {
+  background-image: linear-gradient(
+    135deg,
+    var(--brand-1) 0%,
+    color-mix(in oklab, var(--brand-1) 80%, var(--brand-2)) 100%
+  );
+}
+
+.bg-brand-soft {
+  background-image: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--brand-1) 9%, transparent),
+    color-mix(in oklab, var(--brand-3) 7%, transparent)
+  );
+}
+
+.bg-grid {
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in oklab, var(--foreground) 5%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--foreground) 5%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 52px 52px;
+}
+
+.bg-dots {
+  background-image: radial-gradient(
+    color-mix(in oklab, var(--foreground) 11%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 20px 20px;
+}
+
+.mask-fade-b {
+  mask-image: linear-gradient(to bottom, black 35%, transparent 100%);
+}
+
+.mask-fade-edges {
+  mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+}
+
+.glass {
+  background: color-mix(in oklab, var(--background) 82%, transparent);
+  backdrop-filter: blur(14px) saturate(130%);
+}
+
+/* Dappled canopy light wash instead of neon glows */
+.hero-glow {
+  background:
+    radial-gradient(
+      46rem 28rem at 15% -8%,
+      color-mix(in oklab, var(--brand-1) 12%, transparent),
+      transparent 72%
+    ),
+    radial-gradient(
+      38rem 26rem at 85% 2%,
+      color-mix(in oklab, var(--brand-3) 11%, transparent),
+      transparent 72%
+    );
+}
+
+.card-hover {
+  transition:
+    transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 220ms ease,
+    border-color 220ms ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in oklab, var(--brand-1) 40%, var(--border));
+  box-shadow:
+    0 2px 4px color-mix(in oklab, var(--foreground) 4%, transparent),
+    0 12px 28px -12px color-mix(in oklab, var(--foreground) 10%, transparent);
+}
+
+.ring-brand {
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--brand-1) 28%, transparent);
+}
+
+.shadow-brand {
+  box-shadow:
+    0 1px 0 color-mix(in oklab, white 16%, transparent) inset,
+    0 8px 20px -8px color-mix(in oklab, var(--brand-1) 34%, transparent);
+}
+
+/* ---------- Motion ---------- */
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(1.35);
+  }
+}
+
+@keyframes sheen {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-fade-in {
+  animation: fade-in 900ms ease both;
+}
+
+.animate-float {
+  animation: float 7s ease-in-out infinite;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2.4s ease-in-out infinite;
+}
+
+.animate-sheen {
+  background-size: 200% 100%;
+  animation: sheen 3.5s linear infinite;
+}
+
+.animate-marquee {
+  animation: marquee 28s linear infinite;
+}
+
+.delay-100 {
+  animation-delay: 100ms;
+}
+.delay-200 {
+  animation-delay: 200ms;
+}
+.delay-300 {
+  animation-delay: 300ms;
+}
+.delay-500 {
+  animation-delay: 500ms;
+}
+.delay-700 {
+  animation-delay: 700ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
   html {
-    @apply font-sans;
+    scroll-behavior: auto;
+  }
+  .animate-fade-up,
+  .animate-fade-in,
+  .animate-float,
+  .animate-pulse-soft,
+  .animate-sheen,
+  .animate-marquee {
+    animation: none;
+  }
+  .card-hover:hover {
+    transform: none;
   }
 }
