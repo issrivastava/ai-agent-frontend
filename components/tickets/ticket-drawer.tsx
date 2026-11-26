@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { CalendarDays, Hash, Loader2, ShieldAlert, UserCog, UserRound } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Sheet,
@@ -19,11 +20,22 @@ import { useAuth } from '@/providers/auth-provider';
 import { agents, type Ticket } from '@/types/ticket';
 import { PriorityBadge } from '../shared/priority-badge';
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function MetaCard({
+  icon: Icon,
+  label,
+  children,
+}: {
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  children: React.ReactNode;
+}) {
   return (
-    <div className="space-y-1">
-      <p className="text-xs uppercase tracking-wide text-muted-foreground">{label}</p>
-      <div className="text-sm">{children}</div>
+    <div className="rounded-xl border bg-muted/30 p-3">
+      <p className="flex items-center gap-1.5 text-[10px] font-semibold tracking-[0.12em] text-muted-foreground uppercase">
+        <Icon className="size-3" />
+        {label}
+      </p>
+      <div className="mt-1.5 text-sm">{children}</div>
     </div>
   );
 }
@@ -33,22 +45,62 @@ function TicketDetails({ ticket }: { ticket: Ticket }) {
   const [agent, setAgent] = useState<string>(ticket.assignedAgent);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const reassign = useReassignTicket();
+  const createdAt = new Date(ticket.createdAt);
 
   return (
-    <div className="space-y-5 px-4 pb-4">
-      <div className="flex items-center gap-2">
+    <div className="space-y-4 px-4 pb-6">
+      <div className="flex flex-wrap items-center gap-2">
         <StatusBadge status={ticket.status} />
-    <PriorityBadge priority={ticket.priority} />      </div>
+        <PriorityBadge priority={ticket.priority} />
+        <span className="ml-auto flex items-center gap-1 text-[11px] text-muted-foreground">
+          <Hash className="size-3" />
+          {ticket.id}
+        </span>
+      </div>
 
-      <Field label="Customer">{ticket.customer}</Field>
-      <Field label="Created">{new Date(ticket.createdAt).toLocaleString('en-IN')}</Field>
-      <Field label="Description">{ticket.description}</Field>
-      <Field label="Assigned agent">{ticket.assignedAgent}</Field>
+      <div className="grid grid-cols-2 gap-2">
+        <MetaCard icon={UserRound} label="Customer">
+          <p className="font-medium">{ticket.customer}</p>
+        </MetaCard>
+        <MetaCard icon={CalendarDays} label="Created">
+          <p className="font-medium">{createdAt.toLocaleDateString('en-IN')}</p>
+          <p className="text-[11px] text-muted-foreground">
+            {createdAt.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
+          </p>
+        </MetaCard>
+      </div>
+
+      <div className="rounded-xl border p-3">
+        <p className="flex items-center gap-1.5 text-[10px] font-semibold tracking-[0.12em] text-muted-foreground uppercase">
+          <ShieldAlert className="size-3" />
+          Description
+        </p>
+        <p className="mt-2 text-sm leading-relaxed">{ticket.description}</p>
+      </div>
+
+      <div className="rounded-xl border p-3">
+        <p className="flex items-center gap-1.5 text-[10px] font-semibold tracking-[0.12em] text-muted-foreground uppercase">
+          <UserCog className="size-3" />
+          Assigned agent
+        </p>
+        <div className="mt-2 flex items-center gap-2.5">
+          <span className="flex size-8 items-center justify-center rounded-full bg-brand-soft text-xs font-semibold text-brand-1">
+            {ticket.assignedAgent.slice(0, 2).toUpperCase()}
+          </span>
+          <div>
+            <p className="text-sm font-medium capitalize">{ticket.assignedAgent}</p>
+            <p className="text-[11px] text-muted-foreground">Current owner</p>
+          </div>
+        </div>
+      </div>
 
       {can('tickets:reassign') && (
         <>
           <div className="space-y-2 border-t pt-4">
-            <p className="text-sm font-medium">Reassign ticket</p>
+            <p className="flex items-center gap-1.5 text-sm font-medium">
+              <UserCog className="size-3.5 text-brand-1" />
+              Reassign ticket
+            </p>
             <div className="flex gap-2">
               <FilterSelect
                 label="Agents"
@@ -60,10 +112,14 @@ function TicketDetails({ ticket }: { ticket: Ticket }) {
               <Button
                 disabled={agent === 'all' || agent === ticket.assignedAgent || reassign.isPending}
                 onClick={() => setConfirmOpen(true)}
+                className="bg-brand-gradient text-white hover:brightness-105"
               >
-                Reassign
+                {reassign.isPending ? <Loader2 className="size-4 animate-spin" /> : 'Reassign'}
               </Button>
             </div>
+            <p className="text-[11px] text-muted-foreground">
+              Only roles with the reassign permission can do this. The change is logged.
+            </p>
           </div>
 
           <ConfirmDialog
@@ -100,7 +156,9 @@ export function TicketDrawer({
       <SheetContent side="right" className="w-full overflow-y-auto sm:max-w-md">
         <SheetHeader>
           <SheetTitle>{ticket?.subject ?? 'Ticket details'}</SheetTitle>
-          <SheetDescription>{ticketId}</SheetDescription>
+          <SheetDescription>
+            Everything your agents and team know about this request.
+          </SheetDescription>
         </SheetHeader>
 
         {isLoading && (

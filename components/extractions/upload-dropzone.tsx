@@ -22,7 +22,7 @@ export function UploadDropzone({
     const file = files?.[0];
     if (!file) return;
     if (!ACCEPTED.includes(file.type)) {
-      toast.error('Unsupported file type. Use PDF, PNG, JPG, or CSV.');
+      toast.error('Unsupported file type. Use PDF, PNG, or JPG.');
       return;
     }
     if (file.size > MAX_BYTES) {
@@ -70,11 +70,11 @@ export function UploadDropzone({
       <p className="text-sm font-medium">
         {uploading ? 'Uploading…' : 'Drag a document here, or click to browse'}
       </p>
-      <p className="text-xs text-muted-foreground">PDF, PNG, JPG, or CSV, up to 10 MB</p>
+      <p className="text-xs text-muted-foreground">PDF, PNG, or JPG up to 10 MB</p>
       <input
         ref={inputRef}
         type="file"
-        accept=".pdf,.png,.jpg,.jpeg,.csv"
+        accept=".pdf,.png,.jpg,.jpeg"
         className="hidden"
         onChange={(e) => {
           handle(e.target.files);

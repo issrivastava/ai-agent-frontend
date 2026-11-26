@@ -1,6 +1,6 @@
 import type { ExtractionJob } from '@/types/extraction';
 import type { Run } from '@/types/run';
-import { ticketStatuses, type Ticket } from '@/types/ticket';
+import { ticketPriorities, ticketStatuses, type Ticket } from '@/types/ticket';
 
 const isActiveRun = (r: Run) => r.status === 'running' || r.status === 'waiting_approval';
 
@@ -9,10 +9,15 @@ export function ticketStats(tickets: Ticket[]) {
   return {
     total: tickets.length,
     open: open.length,
+    resolved: tickets.filter((t) => t.status === 'resolved').length,
     urgentOpen: open.filter((t) => t.priority === 'urgent').length,
     byStatus: ticketStatuses.map((status) => ({
       status,
       count: tickets.filter((t) => t.status === status).length,
+    })),
+    byPriority: ticketPriorities.map((priority) => ({
+      priority,
+      count: tickets.filter((t) => t.priority === priority).length,
     })),
   };
 }
@@ -39,7 +44,11 @@ export function runStats(runs: Run[]) {
     .sort(([a], [b]) => a.localeCompare(b))
     .slice(-7)
     .map(([day, v]) => ({
-      day: new Date(day).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', timeZone: 'UTC' }),
+      day: new Date(day).toLocaleDateString('en-IN', {
+        day: 'numeric',
+        month: 'short',
+        timeZone: 'UTC',
+      }),
       ...v,
     }));
 
@@ -63,6 +72,7 @@ export function extractionStats(jobs: ExtractionJob[]) {
     total: jobs.length,
     completed: completed.length,
     inProgress: jobs.filter((j) => j.status === 'queued' || j.status === 'processing').length,
+    fieldsExtracted: completed.reduce((sum, job) => sum + job.fields.length, 0),
     successRate: finished.length ? Math.round((completed.length / finished.length) * 100) : null,
   };
 }

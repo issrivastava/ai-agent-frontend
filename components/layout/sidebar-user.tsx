@@ -17,13 +17,15 @@ export function SidebarUser() {
 
   return (
     <div className="border-t p-3">
-      <div className="flex items-center gap-3 rounded-md p-2">
-        <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-medium text-primary-foreground">
+      <div className="flex items-center gap-3 rounded-lg bg-card/70 p-2 ring-1 ring-border/60">
+        <div className="bg-brand-gradient shadow-brand flex size-9 shrink-0 items-center justify-center rounded-full text-xs font-semibold text-white">
           {initials}
         </div>
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-medium">{user.name}</p>
-          <p className="truncate text-xs capitalize text-muted-foreground">{user.role}</p>
+          <p className="truncate text-[11px] text-muted-foreground capitalize">
+            {user.role} · {user.email}
+          </p>
         </div>
         <button
           type="button"

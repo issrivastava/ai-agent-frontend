@@ -23,4 +23,5 @@ export type Run = {
   startedAt: string;
   finishedAt?: string;
   steps: RunStep[];
+  ticketId?: string;
 };
