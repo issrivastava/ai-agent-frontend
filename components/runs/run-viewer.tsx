@@ -137,9 +137,7 @@ function StepCard({
           </div>
 
           {step.output && (
-            <p className="rounded-lg border bg-muted/40 p-2.5 text-sm leading-relaxed whitespace-pre-wrap">
-              {step.output}
-            </p>
+          <p className="whitespace-pre-wrap rounded-md bg-muted p-2 text-sm">{step.output}</p>
           )}
 
           {step.status === 'waiting_approval' && (
@@ -232,7 +230,9 @@ export function RunViewer({ id }: { id: string }) {
             <div>
               <p className="text-base font-semibold">{run.workflowName}</p>
               <p className="mt-0.5 text-xs text-muted-foreground">
-                {run.id} · started {new Date(run.startedAt).toLocaleString('en-IN')}
+            {run.id}
+            {run.ticketId ? ` · ${run.ticketId}` : ''} · started{' '}
+            {new Date(run.startedAt).toLocaleTimeString('en-IN')}
               </p>
             </div>
             <div className="flex items-center gap-2">

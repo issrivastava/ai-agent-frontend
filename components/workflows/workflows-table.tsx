@@ -3,7 +3,8 @@
 import { useMemo, useState } from 'react';
 import { ConfirmDialog } from '@/components/shared/confirm-dialog';
 import { DataTable } from '@/components/shared/data-table';
-import { useDeleteWorkflow, useRunWorkflow, useWorkflows } from '@/hooks/useWorkflows';
+import { StartRunDialog } from '@/components/workflows/start-run-dialog';
+import { useDeleteWorkflow, useWorkflows } from '@/hooks/useWorkflows';
 import { useAuth } from '@/providers/auth-provider';
 import type { Workflow } from '@/types/workflow';
 import { getWorkflowColumns } from './workflow-columns';
@@ -11,25 +12,22 @@ import { getWorkflowColumns } from './workflow-columns';
 export function WorkflowsTable() {
   const { can } = useAuth();
   const { data, isLoading, isError, refetch } = useWorkflows();
-  const run = useRunWorkflow();
   const remove = useDeleteWorkflow();
   const [deleteTarget, setDeleteTarget] = useState<Workflow | null>(null);
+  const [runTarget, setRunTarget] = useState<Workflow | null>(null);
 
   const canRun = can('workflows:run');
   const canManage = can('workflows:manage');
-  const runningId = run.isPending ? run.variables : undefined;
 
   const columns = useMemo(
     () =>
       getWorkflowColumns({
-        onRun: (wf) => run.mutate(wf.id),
+        onRun: setRunTarget,
         onDelete: setDeleteTarget,
-        runningId,
         canRun,
         canManage,
       }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [runningId, canRun, canManage],
+    [canRun, canManage],
   );
 
   return (
@@ -48,6 +46,13 @@ export function WorkflowsTable() {
             : 'No workflows have been set up yet.'
         }
       />
+
+      <StartRunDialog
+        key={runTarget?.id ?? 'none'}
+        workflow={runTarget}
+        onClose={() => setRunTarget(null)}
+      />
+
       <ConfirmDialog
         open={!!deleteTarget}
         onOpenChange={(open) => !open && setDeleteTarget(null)}

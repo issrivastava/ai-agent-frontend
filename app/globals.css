@@ -193,7 +193,11 @@
 
 /* Deep pine to moss shift — grounded and natural */
 .text-gradient {
-  background-image: linear-gradient(115deg, var(--brand-1) 0%, var(--brand-2) 100%);
+  background-image: linear-gradient(
+    115deg,
+    var(--brand-1) 0%,
+    var(--brand-2) 100%
+  );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
