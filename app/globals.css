@@ -53,104 +53,104 @@
 }
 
 :root {
-  /* Warm Chalk & Botanical Stone Neutrals (Hue ~115–130) */
-  --background: oklch(0.978 0.006 120);
-  --foreground: oklch(0.21 0.018 150);
-  --card: oklch(0.996 0.003 120);
-  --card-foreground: oklch(0.21 0.018 150);
-  --popover: oklch(0.996 0.003 120);
-  --popover-foreground: oklch(0.21 0.018 150);
+  /* Warm Blush-Alabaster & Soft Rose-Stone Neutrals (Hue ~12–24) */
+  --background: oklch(0.98 0.007 18);
+  --foreground: oklch(0.205 0.018 12);
+  --card: oklch(0.996 0.004 18);
+  --card-foreground: oklch(0.205 0.018 12);
+  --popover: oklch(0.996 0.004 18);
+  --popover-foreground: oklch(0.205 0.018 12);
 
-  /* Deep Forest / Eucalyptus Primary (Hue ~155) */
-  --primary: oklch(0.45 0.095 155);
-  --primary-foreground: oklch(0.985 0.005 120);
+  /* Rich Berry Rose Primary (Hue ~354) */
+  --primary: oklch(0.54 0.165 354);
+  --primary-foreground: oklch(0.988 0.005 18);
 
-  /* Soft Sage Mist & Linen Surfaces */
-  --secondary: oklch(0.942 0.014 135);
-  --secondary-foreground: oklch(0.26 0.025 150);
-  --muted: oklch(0.945 0.012 130);
-  --muted-foreground: oklch(0.48 0.02 145);
+  /* Soft Petal-Mist & Warm Linen Surfaces */
+  --secondary: oklch(0.946 0.015 14);
+  --secondary-foreground: oklch(0.26 0.025 12);
+  --muted: oklch(0.948 0.013 16);
+  --muted-foreground: oklch(0.49 0.02 14);
 
-  /* Pale Sage Hover & Tag Tint */
-  --accent: oklch(0.928 0.022 145);
-  --accent-foreground: oklch(0.3 0.065 155);
+  /* Dusty Rose Hover & Tag Tint */
+  --accent: oklch(0.934 0.028 10);
+  --accent-foreground: oklch(0.38 0.12 354);
 
-  --destructive: oklch(0.55 0.21 26);
-  --border: oklch(0.888 0.015 135);
-  --input: oklch(0.878 0.016 135);
-  --ring: oklch(0.45 0.095 155);
+  --destructive: oklch(0.53 0.21 25);
+  --border: oklch(0.892 0.015 15);
+  --input: oklch(0.882 0.017 15);
+  --ring: oklch(0.54 0.165 354);
 
-  /* Botanical Brand Accents: Forest Pine -> Moss Sage -> Warm Olive/Brass */
-  --brand-1: oklch(0.45 0.095 155);
-  --brand-2: oklch(0.56 0.085 142);
-  --brand-3: oklch(0.66 0.11 95);
-  --brand-soft: oklch(0.94 0.022 145);
+  /* Editorial Pink Brand Accents: Berry Rose -> Dusty Pink -> Warm Coral */
+  --brand-1: oklch(0.54 0.165 354);
+  --brand-2: oklch(0.62 0.155 8);
+  --brand-3: oklch(0.68 0.135 28);
+  --brand-soft: oklch(0.944 0.028 10);
 
-  /* Earthy Botanical Chart Palette */
-  --chart-1: oklch(0.45 0.095 155);
-  --chart-2: oklch(0.62 0.09 135);
-  --chart-3: oklch(0.68 0.12 88);
-  --chart-4: oklch(0.55 0.12 42);
-  --chart-5: oklch(0.52 0.075 195);
+  /* Warm Rose Chart Palette */
+  --chart-1: oklch(0.54 0.165 354);
+  --chart-2: oklch(0.66 0.14 26);
+  --chart-3: oklch(0.72 0.13 72);
+  --chart-4: oklch(0.5 0.09 155);
+  --chart-5: oklch(0.52 0.12 315);
 
   --radius: 0.65rem;
 
-  --sidebar: oklch(0.966 0.009 128);
-  --sidebar-foreground: oklch(0.23 0.018 150);
-  --sidebar-primary: oklch(0.45 0.095 155);
-  --sidebar-primary-foreground: oklch(0.985 0.005 120);
-  --sidebar-accent: oklch(0.928 0.022 145);
-  --sidebar-accent-foreground: oklch(0.3 0.065 155);
-  --sidebar-border: oklch(0.888 0.015 135);
-  --sidebar-ring: oklch(0.45 0.095 155);
+  --sidebar: oklch(0.968 0.01 16);
+  --sidebar-foreground: oklch(0.225 0.018 12);
+  --sidebar-primary: oklch(0.54 0.165 354);
+  --sidebar-primary-foreground: oklch(0.988 0.005 18);
+  --sidebar-accent: oklch(0.934 0.028 10);
+  --sidebar-accent-foreground: oklch(0.38 0.12 354);
+  --sidebar-border: oklch(0.892 0.015 15);
+  --sidebar-ring: oklch(0.54 0.165 354);
 }
 
 .dark {
-  /* Deep Pine & Dark Moss Neutrals (Hue ~148–155) */
-  --background: oklch(0.165 0.014 152);
-  --foreground: oklch(0.945 0.01 125);
-  --card: oklch(0.205 0.017 152);
-  --card-foreground: oklch(0.945 0.01 125);
-  --popover: oklch(0.21 0.018 152);
-  --popover-foreground: oklch(0.945 0.01 125);
+  /* Deep Velvet Cocoa & Warm Rosewood Neutrals (Hue ~8–18) */
+  --background: oklch(0.165 0.015 12);
+  --foreground: oklch(0.948 0.009 18);
+  --card: oklch(0.205 0.019 12);
+  --card-foreground: oklch(0.948 0.009 18);
+  --popover: oklch(0.21 0.02 12);
+  --popover-foreground: oklch(0.948 0.009 18);
 
-  /* Soft Sage / Lichen Primary */
-  --primary: oklch(0.69 0.1 150);
-  --primary-foreground: oklch(0.16 0.02 152);
+  /* Soft Rose-Petal Primary */
+  --primary: oklch(0.72 0.145 356);
+  --primary-foreground: oklch(0.16 0.02 10);
 
-  --secondary: oklch(0.255 0.02 150);
-  --secondary-foreground: oklch(0.93 0.01 125);
-  --muted: oklch(0.245 0.018 150);
-  --muted-foreground: oklch(0.69 0.018 138);
+  --secondary: oklch(0.258 0.022 12);
+  --secondary-foreground: oklch(0.935 0.009 18);
+  --muted: oklch(0.248 0.02 12);
+  --muted-foreground: oklch(0.69 0.018 15);
 
-  --accent: oklch(0.28 0.032 150);
-  --accent-foreground: oklch(0.92 0.024 142);
+  --accent: oklch(0.285 0.038 8);
+  --accent-foreground: oklch(0.93 0.032 14);
 
-  --destructive: oklch(0.66 0.18 25);
-  --border: oklch(0.92 0.015 135 / 11%);
-  --input: oklch(0.92 0.015 135 / 15%);
-  --ring: oklch(0.69 0.1 150);
+  --destructive: oklch(0.66 0.185 24);
+  --border: oklch(0.92 0.016 14 / 11%);
+  --input: oklch(0.92 0.016 14 / 15%);
+  --ring: oklch(0.72 0.145 356);
 
-  /* Botanical Dark Brand Accents */
-  --brand-1: oklch(0.69 0.1 150);
-  --brand-2: oklch(0.74 0.085 135);
-  --brand-3: oklch(0.76 0.11 95);
-  --brand-soft: oklch(0.25 0.032 150);
+  /* Pink Dark Brand Accents */
+  --brand-1: oklch(0.72 0.145 356);
+  --brand-2: oklch(0.76 0.135 12);
+  --brand-3: oklch(0.79 0.12 30);
+  --brand-soft: oklch(0.255 0.036 8);
 
-  --chart-1: oklch(0.69 0.1 150);
-  --chart-2: oklch(0.74 0.085 135);
-  --chart-3: oklch(0.76 0.11 95);
-  --chart-4: oklch(0.68 0.12 45);
-  --chart-5: oklch(0.66 0.08 195);
+  --chart-1: oklch(0.72 0.145 356);
+  --chart-2: oklch(0.77 0.125 28);
+  --chart-3: oklch(0.8 0.13 74);
+  --chart-4: oklch(0.66 0.085 155);
+  --chart-5: oklch(0.68 0.12 318);
 
-  --sidebar: oklch(0.185 0.015 152);
-  --sidebar-foreground: oklch(0.93 0.01 125);
-  --sidebar-primary: oklch(0.69 0.1 150);
-  --sidebar-primary-foreground: oklch(0.16 0.02 152);
-  --sidebar-accent: oklch(0.26 0.026 150);
-  --sidebar-accent-foreground: oklch(0.94 0.015 140);
-  --sidebar-border: oklch(0.92 0.015 135 / 10%);
-  --sidebar-ring: oklch(0.69 0.1 150);
+  --sidebar: oklch(0.185 0.017 12);
+  --sidebar-foreground: oklch(0.935 0.009 18);
+  --sidebar-primary: oklch(0.72 0.145 356);
+  --sidebar-primary-foreground: oklch(0.16 0.02 10);
+  --sidebar-accent: oklch(0.265 0.032 8);
+  --sidebar-accent-foreground: oklch(0.94 0.02 14);
+  --sidebar-border: oklch(0.92 0.016 14 / 10%);
+  --sidebar-ring: oklch(0.72 0.145 356);
 }
 
 @layer base {
@@ -169,7 +169,7 @@
     text-rendering: optimizeLegibility;
   }
   ::selection {
-    background: color-mix(in oklab, var(--primary) 22%, transparent);
+    background: color-mix(in oklab, var(--primary) 24%, transparent);
   }
   ::-webkit-scrollbar {
     width: 10px;
@@ -191,7 +191,7 @@
 
 /* ---------- Brand surfaces & decoration ---------- */
 
-/* Deep pine to moss shift — grounded and natural */
+/* Warm berry-to-rose shift — refined and editorial */
 .text-gradient {
   background-image: linear-gradient(
     115deg,
@@ -207,15 +207,15 @@
   background-image: linear-gradient(
     135deg,
     var(--brand-1) 0%,
-    color-mix(in oklab, var(--brand-1) 80%, var(--brand-2)) 100%
+    color-mix(in oklab, var(--brand-1) 78%, var(--brand-2)) 100%
   );
 }
 
 .bg-brand-soft {
   background-image: linear-gradient(
     135deg,
-    color-mix(in oklab, var(--brand-1) 9%, transparent),
-    color-mix(in oklab, var(--brand-3) 7%, transparent)
+    color-mix(in oklab, var(--brand-1) 10%, transparent),
+    color-mix(in oklab, var(--brand-3) 8%, transparent)
   );
 }
 
@@ -255,7 +255,7 @@
   backdrop-filter: blur(14px) saturate(130%);
 }
 
-/* Dappled canopy light wash instead of neon glows */
+/* Soft rose-gold ambient light instead of neon glows */
 .hero-glow {
   background:
     radial-gradient(
@@ -286,13 +286,13 @@
 }
 
 .ring-brand {
-  box-shadow: 0 0 0 1px color-mix(in oklab, var(--brand-1) 28%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--brand-1) 30%, transparent);
 }
 
 .shadow-brand {
   box-shadow:
-    0 1px 0 color-mix(in oklab, white 16%, transparent) inset,
-    0 8px 20px -8px color-mix(in oklab, var(--brand-1) 34%, transparent);
+    0 1px 0 color-mix(in oklab, white 18%, transparent) inset,
+    0 8px 20px -8px color-mix(in oklab, var(--brand-1) 36%, transparent);
 }
 
 /* ---------- Motion ---------- */

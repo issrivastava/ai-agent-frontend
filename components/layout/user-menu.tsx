@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import { BookOpen, ChevronDown, LogOut, Settings } from 'lucide-react';
+import { BookOpen, ChevronDown, KeyRound, LogOut, Settings } from 'lucide-react';
+import { ChangePasswordDialog } from '@/components/auth/change-password-dialog';
 import { useLogout } from '@/hooks/useAuth';
 import { useUiStore } from '@/lib/ui-store';
 import { useAuth } from '@/providers/auth-provider';
@@ -12,6 +13,7 @@ export function UserMenu() {
   const logout = useLogout();
   const setHelpOpen = useUiStore((s) => s.setHelpOpen);
   const [open, setOpen] = useState(false);
+  const [passwordOpen, setPasswordOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -89,6 +91,18 @@ export function UserMenu() {
               role="menuitem"
               onClick={() => {
                 setOpen(false);
+                setPasswordOpen(true);
+              }}
+              className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-sm transition-colors hover:bg-muted"
+            >
+              <KeyRound className="size-4 text-muted-foreground" />
+              Change password
+            </button>
+            <button
+              type="button"
+              role="menuitem"
+              onClick={() => {
+                setOpen(false);
                 setHelpOpen(true);
               }}
               className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-sm transition-colors hover:bg-muted"
@@ -110,6 +124,8 @@ export function UserMenu() {
           </div>
         </div>
       )}
+
+      <ChangePasswordDialog open={passwordOpen} onOpenChange={setPasswordOpen} />
     </div>
   );
 }

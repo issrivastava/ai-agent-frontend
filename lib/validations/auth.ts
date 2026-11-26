@@ -5,15 +5,18 @@ export const loginSchema = z.object({
   password: z.string().min(1, 'Password is required'),
 });
 
+const newPassword = z
+  .string()
+  .min(8, 'At least 8 characters')
+  .max(72, 'Password is too long (72 characters maximum)')
+  .regex(/[A-Z]/, 'Include an uppercase letter')
+  .regex(/[0-9]/, 'Include a number');
+
 export const registerSchema = z
   .object({
     name: z.string().min(2, 'Name must be at least 2 characters'),
     email: z.email('Enter a valid email address'),
-    password: z
-      .string()
-      .min(8, 'At least 8 characters')
-      .regex(/[A-Z]/, 'Include an uppercase letter')
-      .regex(/[0-9]/, 'Include a number'),
+    password: newPassword,
     confirmPassword: z.string(),
   })
   .refine((d) => d.password === d.confirmPassword, {
@@ -21,5 +24,21 @@ export const registerSchema = z
     path: ['confirmPassword'],
   });
 
+export const changePasswordSchema = z
+  .object({
+    currentPassword: z.string().min(1, 'Current password is required'),
+    newPassword,
+    confirmPassword: z.string(),
+  })
+  .refine((d) => d.newPassword === d.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  })
+  .refine((d) => d.newPassword !== d.currentPassword, {
+    message: 'New password must be different from the current one',
+    path: ['newPassword'],
+  });
+
 export type LoginInput = z.infer<typeof loginSchema>;
 export type RegisterInput = z.infer<typeof registerSchema>;
+export type ChangePasswordInput = z.infer<typeof changePasswordSchema>;
