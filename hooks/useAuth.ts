@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { api } from '@/lib/api';
 import { getErrorMessage } from '@/lib/errors';
-import type { LoginInput, RegisterInput } from '@/lib/validations/auth';
+import type { ChangePasswordInput, LoginInput, RegisterInput } from '@/lib/validations/auth';
 import type { User } from '@/types/user';
 
 export function useLogin() {
@@ -45,5 +45,18 @@ export function useLogout() {
       router.replace('/login');
       router.refresh();
     },
+  });
+}
+
+export function useChangePassword() {
+  return useMutation({
+    mutationFn: async (data: ChangePasswordInput) => {
+      await api.post('/auth/change-password', {
+        currentPassword: data.currentPassword,
+        newPassword: data.newPassword,
+      });
+    },
+    onSuccess: () => toast.success('Password updated. Use it the next time you sign in.'),
+    onError: (e) => toast.error(getErrorMessage(e, 'Could not change your password')),
   });
 }
