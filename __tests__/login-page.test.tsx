@@ -35,9 +35,10 @@ describe('login page', () => {
 
   it('links to the register page', () => {
     render(<LoginPage />);
-    expect(
-      screen.getByRole('link', { name: /create an account/i }),
-    ).toHaveAttribute('href', '/register');
+    expect(screen.getByRole('link', { name: /create an account/i })).toHaveAttribute(
+      'href',
+      '/register',
+    );
   });
 
   it('does not show demo credentials', () => {

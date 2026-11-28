@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { Inbox } from 'lucide-react';
+import { EmptyState } from '@/components/shared/empty-state';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -61,7 +63,12 @@ export function StartRunDialog({
               ))}
             </select>
             {noTickets && (
-              <p className="text-sm text-muted-foreground">There are no open tickets to work on.</p>
+              <EmptyState
+                compact
+                icon={Inbox}
+                title="No open tickets"
+                description="There are no open tickets to work on."
+              />
             )}
           </div>
         )}

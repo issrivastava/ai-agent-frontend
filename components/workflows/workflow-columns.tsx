@@ -31,7 +31,9 @@ export function getWorkflowColumns({
       cell: ({ row }) => (
         <div>
           <p className="font-medium">{row.original.name}</p>
-          <p className="max-w-xs truncate text-xs text-muted-foreground">{row.original.description}</p>
+          <p className="max-w-xs truncate text-xs text-muted-foreground">
+            {row.original.description}
+          </p>
         </div>
       ),
     },

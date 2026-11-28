@@ -273,9 +273,13 @@ export default function LandingPage() {
                   { value: '3', label: 'role levels' },
                   { value: '100%', label: 'decisions audited' },
                 ].map((stat) => (
-                  <div key={stat.label} className="px-3 text-center">
-                    <p className="text-xl font-semibold tracking-tight">{stat.value}</p>
-                    <p className="text-[11px] text-muted-foreground">{stat.label}</p>
+                  <div key={stat.label} className="px-2 text-center sm:px-3">
+                    <p className="text-lg font-semibold tracking-tight whitespace-nowrap sm:text-xl">
+                      {stat.value}
+                    </p>
+                    <p className="text-[10px] text-balance text-muted-foreground sm:text-[11px]">
+                      {stat.label}
+                    </p>
                   </div>
                 ))}
               </div>

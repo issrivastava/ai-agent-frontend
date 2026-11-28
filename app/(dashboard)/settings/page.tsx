@@ -3,8 +3,9 @@ import { KeyRound, Settings, ShieldCheck, Users } from 'lucide-react';
 import { RequirePermission } from '@/components/auth/guards';
 import { PageGuide } from '@/components/layout/page-guide';
 import { PageHeader } from '@/components/layout/page-header';
+import { ProfileCard } from '@/components/settings/profile-card';
 import { UsersTable } from '@/components/settings/users-table';
-import { Skeleton } from '@/components/ui/skeleton';
+import { TableContentSkeleton } from '@/components/shared/skeletons';
 
 export default function SettingsPage() {
   return (
@@ -33,8 +34,9 @@ export default function SettingsPage() {
           },
         ]}
       />
+      <ProfileCard />
       <RequirePermission permission="users:manage">
-        <Suspense fallback={<Skeleton className="h-72 w-full" />}>
+        <Suspense fallback={<TableContentSkeleton columns={5} rows={5} filters={2} />}>
           <UsersTable />
         </Suspense>
       </RequirePermission>

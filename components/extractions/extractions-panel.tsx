@@ -10,7 +10,9 @@ import type { ExtractionJob } from '@/types/extraction';
 import { UploadDropzone } from './upload-dropzone';
 
 export const formatBytes = (bytes: number) =>
-  bytes < 1024 * 1024 ? `${Math.round(bytes / 1024)} KB` : `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  bytes < 1024 * 1024
+    ? `${Math.round(bytes / 1024)} KB`
+    : `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 
 const columns: ColumnDef<ExtractionJob>[] = [
   { accessorKey: 'id', header: 'Job' },
@@ -64,7 +66,9 @@ export function ExtractionsPanel() {
         searchPlaceholder="Search jobs…"
         emptyTitle="No extraction jobs yet"
         emptyDescription={
-          can('extractions:upload') ? 'Upload a document to start.' : 'No documents have been processed yet.'
+          can('extractions:upload')
+            ? 'Upload a document to start.'
+            : 'No documents have been processed yet.'
         }
         onRowClick={(job) => router.push(`/extractions/${job.id}`)}
       />

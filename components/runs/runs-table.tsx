@@ -5,8 +5,10 @@ import { useRouter } from 'next/navigation';
 import type { ColumnDef } from '@tanstack/react-table';
 import { DataTable, SortableHeader } from '@/components/shared/data-table';
 import { StatusBadge } from '@/components/shared/status-badge';
+import { SuggestionChips } from '@/components/shared/suggestion-chips';
 import { useRuns } from '@/hooks/useRun';
 import type { Run } from '@/types/run';
+import { Workflow } from 'lucide-react';
 
 function formatDuration(run: Run) {
   if (!run.finishedAt) return '—';
@@ -73,6 +75,11 @@ export function RunsTable() {
       searchPlaceholder="Search runs…"
       emptyTitle="No runs yet"
       emptyDescription="Run a workflow and it will appear here."
+      emptyAction={
+        <SuggestionChips
+          suggestions={[{ label: 'Browse workflows', icon: Workflow, href: '/workflows' }]}
+        />
+      }
       onRowClick={(run) => router.push(`/runs/${run.id}`)}
     />
   );

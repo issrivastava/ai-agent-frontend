@@ -35,4 +35,4 @@ export function StatusBadge({ status }: { status: string }) {
       {label}
     </Badge>
   );
-}       
+}

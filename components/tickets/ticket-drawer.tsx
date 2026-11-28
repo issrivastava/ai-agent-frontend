@@ -1,7 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import { CalendarDays, Hash, Loader2, ShieldAlert, UserCog, UserRound } from 'lucide-react';
+import {
+  CalendarDays,
+  Hash,
+  History,
+  Loader2,
+  ShieldAlert,
+  UserCog,
+  UserRound,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Sheet,
@@ -19,6 +27,7 @@ import { useReassignTicket, useTicket } from '@/hooks/useTickets';
 import { useAuth } from '@/providers/auth-provider';
 import { agents, type Ticket } from '@/types/ticket';
 import { PriorityBadge } from '../shared/priority-badge';
+import { TicketStatusTimeline } from './ticket-timeline';
 
 function MetaCard({
   icon: Icon,
@@ -76,6 +85,16 @@ function TicketDetails({ ticket }: { ticket: Ticket }) {
           Description
         </p>
         <p className="mt-2 text-sm leading-relaxed">{ticket.description}</p>
+      </div>
+
+      <div className="rounded-xl border p-3">
+        <p className="flex items-center gap-1.5 text-[10px] font-semibold tracking-[0.12em] text-muted-foreground uppercase">
+          <History className="size-3" />
+          Status timeline
+        </p>
+        <div className="mt-3">
+          <TicketStatusTimeline ticket={ticket} />
+        </div>
       </div>
 
       <div className="rounded-xl border p-3">

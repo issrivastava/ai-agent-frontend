@@ -3,7 +3,7 @@ import { CheckCheck, FileSearch, ScanLine, UploadCloud } from 'lucide-react';
 import { PageGuide } from '@/components/layout/page-guide';
 import { PageHeader } from '@/components/layout/page-header';
 import { ExtractionsPanel } from '@/components/extractions/extractions-panel';
-import { Skeleton } from '@/components/ui/skeleton';
+import { TableContentSkeleton } from '@/components/shared/skeletons';
 
 export default function ExtractionsPage() {
   return (
@@ -32,7 +32,7 @@ export default function ExtractionsPage() {
           },
         ]}
       />
-      <Suspense fallback={<Skeleton className="h-96 w-full" />}>
+      <Suspense fallback={<TableContentSkeleton columns={5} filters={1} />}>
         <ExtractionsPanel />
       </Suspense>
     </>

@@ -2,7 +2,7 @@
 
 import { RequirePermission } from '@/components/auth/guards';
 import { ErrorState } from '@/components/shared/error-state';
-import { Skeleton } from '@/components/ui/skeleton';
+import { FormSkeleton } from '@/components/shared/skeletons';
 import { useUpdateWorkflow, useWorkflow } from '@/hooks/useWorkflows';
 import { WorkflowForm } from './workflow-form';
 
@@ -10,7 +10,7 @@ function EditWorkflowForm({ id }: { id: string }) {
   const { data, isLoading, isError, refetch } = useWorkflow(id);
   const update = useUpdateWorkflow(id);
 
-  if (isLoading) return <Skeleton className="h-96 max-w-3xl" />;
+  if (isLoading) return <FormSkeleton />;
   if (isError || !data) {
     return <ErrorState message="Could not load this workflow." onRetry={() => refetch()} />;
   }

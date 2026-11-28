@@ -14,13 +14,19 @@ import {
 } from 'lucide-react';
 import { ConfirmDialog } from '@/components/shared/confirm-dialog';
 import { ErrorState } from '@/components/shared/error-state';
+import { RatingStars } from '@/components/shared/rating-stars';
 import { StatusBadge } from '@/components/shared/status-badge';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useLocalStore } from '@/hooks/use-local-store';
 import { useRun, useRunDecision } from '@/hooks/useRun';
 import { cn } from '@/lib/utils';
 import type { Run, RunStep, StepStatus } from '@/types/run';
+import { toast } from 'sonner';
+
+const RUN_RATINGS_KEY = 'agent-platform:run-ratings';
+const EMPTY_RATINGS: Record<string, number> = {};
 
 const stepMeta: Record<StepStatus, { icon: React.ReactNode; tone: string }> = {
   pending: {
@@ -137,7 +143,7 @@ function StepCard({
           </div>
 
           {step.output && (
-          <p className="whitespace-pre-wrap rounded-md bg-muted p-2 text-sm">{step.output}</p>
+            <p className="rounded-md bg-muted p-2 text-sm whitespace-pre-wrap">{step.output}</p>
           )}
 
           {step.status === 'waiting_approval' && (
@@ -181,6 +187,10 @@ export function RunViewer({ id }: { id: string }) {
   const { data: run, isLoading, isError, refetch } = useRun(id);
   const decide = useRunDecision(id);
   const [rejectOpen, setRejectOpen] = useState(false);
+  const [ratings, setRatings] = useLocalStore<Record<string, number>>(
+    RUN_RATINGS_KEY,
+    EMPTY_RATINGS,
+  );
 
   if (isLoading) {
     return (
@@ -230,9 +240,9 @@ export function RunViewer({ id }: { id: string }) {
             <div>
               <p className="text-base font-semibold">{run.workflowName}</p>
               <p className="mt-0.5 text-xs text-muted-foreground">
-            {run.id}
-            {run.ticketId ? ` · ${run.ticketId}` : ''} · started{' '}
-            {new Date(run.startedAt).toLocaleTimeString('en-IN')}
+                {run.id}
+                {run.ticketId ? ` · ${run.ticketId}` : ''} · started{' '}
+                {new Date(run.startedAt).toLocaleTimeString('en-IN')}
               </p>
             </div>
             <div className="flex items-center gap-2">
@@ -298,6 +308,33 @@ export function RunViewer({ id }: { id: string }) {
           />
         ))}
       </div>
+
+      {(run.status === 'completed' || run.status === 'failed') && (
+        <Card>
+          <CardContent className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <p className="text-sm font-medium">Rate this run</p>
+              <p className="mt-0.5 text-xs text-muted-foreground">
+                How useful was this outcome? Your rating stays on this device.
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              <RatingStars
+                value={ratings[run.id] ?? 0}
+                onChange={(value) => {
+                  setRatings({ ...ratings, [run.id]: value });
+                  toast.success(`Rated ${value} out of 5`);
+                }}
+              />
+              {(ratings[run.id] ?? 0) > 0 && (
+                <span className="text-xs font-medium text-muted-foreground">
+                  {ratings[run.id]}/5
+                </span>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       <ConfirmDialog
         open={rejectOpen}
