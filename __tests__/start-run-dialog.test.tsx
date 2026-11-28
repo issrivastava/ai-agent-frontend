@@ -25,7 +25,12 @@ const dispatchWorkflow: Workflow = {
   agents: [{ role: 'triage', prompt: 'Classify the ticket.', tools: ['ticket_lookup'] }],
   updatedAt: '2026-11-20T10:00:00.000Z',
 };
-const extractionWorkflow: Workflow = { ...dispatchWorkflow, id: 'WF-002', name: 'Invoice extraction', type: 'extraction' };
+const extractionWorkflow: Workflow = {
+  ...dispatchWorkflow,
+  id: 'WF-002',
+  name: 'Invoice extraction',
+  type: 'extraction',
+};
 
 describe('StartRunDialog', () => {
   beforeEach(() => {
@@ -40,7 +45,9 @@ describe('StartRunDialog', () => {
     render(<StartRunDialog workflow={dispatchWorkflow} onClose={() => {}} />);
 
     expect(screen.getByLabelText('Ticket')).toBeInTheDocument();
-    expect(screen.getByRole('option', { name: /TCK-1001 · Refund not received/ })).toBeInTheDocument();
+    expect(
+      screen.getByRole('option', { name: /TCK-1001 · Refund not received/ }),
+    ).toBeInTheDocument();
     expect(screen.getByRole('option', { name: /TCK-1002 · Login problem/ })).toBeInTheDocument();
   });
 

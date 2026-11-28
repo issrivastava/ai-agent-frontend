@@ -9,6 +9,17 @@ export function useTickets(filters: TicketFilters) {
     queryKey: ['tickets', filters],
     queryFn: async () => (await api.get<Ticket[]>('/tickets', { params: filters })).data,
     placeholderData: keepPreviousData, // keep old rows visible while a new filter loads
+    select: (all) => {
+      // Facets the backend may not support are also applied here, so the list is
+      // correct whether or not the server understands the params.
+      if (!filters.assignedAgent && !filters.createdAfter) return all;
+      const cutoff = filters.createdAfter ? new Date(filters.createdAfter).getTime() : undefined;
+      return all.filter(
+        (t) =>
+          (!filters.assignedAgent || t.assignedAgent === filters.assignedAgent) &&
+          (cutoff === undefined || new Date(t.createdAt).getTime() >= cutoff),
+      );
+    },
   });
 }
 

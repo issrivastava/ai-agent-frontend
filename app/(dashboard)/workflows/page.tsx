@@ -4,9 +4,9 @@ import { Layers, Play, Plus, Wrench, Workflow } from 'lucide-react';
 import { Can } from '@/components/auth/guards';
 import { PageGuide } from '@/components/layout/page-guide';
 import { PageHeader } from '@/components/layout/page-header';
+import { TableContentSkeleton } from '@/components/shared/skeletons';
 import { WorkflowsTable } from '@/components/workflows/workflows-table';
 import { buttonVariants } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 
 export default function WorkflowsPage() {
@@ -50,7 +50,7 @@ export default function WorkflowsPage() {
           },
         ]}
       />
-      <Suspense fallback={<Skeleton className="h-96 w-full" />}>
+      <Suspense fallback={<TableContentSkeleton columns={5} />}>
         <WorkflowsTable />
       </Suspense>
     </>

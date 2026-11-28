@@ -10,9 +10,11 @@ export function useLogin() {
   const router = useRouter();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (data: LoginInput) => (await api.post<{ user: User }>('/auth/login', data)).data,
+    mutationFn: async (data: LoginInput) =>
+      (await api.post<{ user: User }>('/auth/login', data)).data,
     onSuccess: ({ user }) => {
       queryClient.setQueryData(['me'], user);
+      toast.success(`Welcome back, ${user.name.split(' ')[0]}`);
       router.push('/dashboard');
       router.refresh();
     },
@@ -45,6 +47,7 @@ export function useLogout() {
       router.replace('/login');
       router.refresh();
     },
+    onError: (e) => toast.error(getErrorMessage(e, 'Could not sign out')),
   });
 }
 

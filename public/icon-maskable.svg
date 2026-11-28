@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="AI Agent Platform">
+  <defs>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#b33b75"/>
+      <stop offset="1" stop-color="#ea7ba7"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#brand)"/>
+  <g transform="translate(256 264) scale(0.72) translate(-256 -256)">
+    <rect x="146" y="184" width="220" height="176" rx="48" fill="#ffffff"/>
+    <circle cx="212" cy="266" r="20" fill="#b33b75"/>
+    <circle cx="300" cy="266" r="20" fill="#b33b75"/>
+    <path d="M216 320h80" stroke="#b33b75" stroke-width="16" stroke-linecap="round"/>
+    <path d="M256 184v-44" stroke="#ffffff" stroke-width="16" stroke-linecap="round"/>
+    <circle cx="256" cy="120" r="20" fill="#ffffff"/>
+  </g>
+</svg>

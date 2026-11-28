@@ -5,7 +5,10 @@ import { SidebarUser } from './sidebar-user';
 
 export function Sidebar() {
   return (
-    <aside className="hidden w-64 shrink-0 flex-col border-r bg-sidebar md:flex">
+    <aside
+      data-tour="sidebar"
+      className="hidden w-64 shrink-0 flex-col border-r bg-sidebar md:flex"
+    >
       <div className="flex h-16 shrink-0 items-center border-b px-4">
         <Link href="/dashboard" aria-label="AI Agent Platform dashboard">
           <Logo markClassName="size-8 rounded-lg" />

@@ -9,11 +9,14 @@ import {
   FileSearch,
   Moon,
   Plus,
+  Rocket,
   Search,
+  ShieldCheck,
   UploadCloud,
   type LucideIcon,
 } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
+import { useRuns } from '@/hooks/useRun';
 import { useAuth } from '@/providers/auth-provider';
 import { navItems } from '@/lib/navigation';
 import { useUiStore } from '@/lib/ui-store';
@@ -23,12 +26,12 @@ type PaletteItem = {
   id: string;
   label: string;
   hint: string;
-  group: 'Pages' | 'Actions' | 'Help';
+  group: 'Suggested' | 'Pages' | 'Actions' | 'Help';
   icon: LucideIcon;
   onSelect: () => void;
 };
 
-const groupOrder = ['Pages', 'Actions', 'Help'] as const;
+const groupOrder = ['Suggested', 'Pages', 'Actions', 'Help'] as const;
 
 export function CommandPalette() {
   const router = useRouter();
@@ -37,9 +40,15 @@ export function CommandPalette() {
   const commandOpen = useUiStore((s) => s.commandOpen);
   const setCommandOpen = useUiStore((s) => s.setCommandOpen);
   const setHelpOpen = useUiStore((s) => s.setHelpOpen);
+  const setTourOpen = useUiStore((s) => s.setTourOpen);
+  const runs = useRuns();
   const [query, setQuery] = useState('');
   const [active, setActive] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const pendingApprovals = (runs.data ?? []).filter(
+    (run) => run.status === 'waiting_approval',
+  ).length;
 
   const items = useMemo<PaletteItem[]>(() => {
     const close = () => {
@@ -47,6 +56,34 @@ export function CommandPalette() {
       setQuery('');
       setActive(0);
     };
+
+    const suggested: PaletteItem[] = [];
+
+    if (pendingApprovals > 0) {
+      suggested.push({
+        id: 'suggested-approvals',
+        label: 'Review pending approvals',
+        hint: `${pendingApprovals} run${pendingApprovals === 1 ? '' : 's'} waiting for a decision`,
+        group: 'Suggested',
+        icon: ShieldCheck,
+        onSelect: () => {
+          close();
+          router.push('/runs');
+        },
+      });
+    }
+
+    suggested.push({
+      id: 'suggested-tour',
+      label: 'Take a product tour',
+      hint: 'A 60-second walkthrough of the workspace',
+      group: 'Suggested',
+      icon: Rocket,
+      onSelect: () => {
+        close();
+        setTourOpen(true);
+      },
+    });
 
     const pages: PaletteItem[] = navItems
       .filter((item) => !item.permission || can(item.permission))
@@ -118,8 +155,17 @@ export function CommandPalette() {
       },
     ];
 
-    return [...pages, ...actions, ...help];
-  }, [can, router, resolvedTheme, setCommandOpen, setHelpOpen, setTheme]);
+    return [...suggested, ...pages, ...actions, ...help];
+  }, [
+    can,
+    router,
+    resolvedTheme,
+    setCommandOpen,
+    setHelpOpen,
+    setTheme,
+    setTourOpen,
+    pendingApprovals,
+  ]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -292,6 +338,7 @@ export function CommandPaletteTrigger() {
   return (
     <button
       type="button"
+      data-tour="search"
       onClick={() => setCommandOpen(true)}
       className="hidden h-8 items-center gap-2 rounded-lg border border-transparent bg-muted/60 px-2.5 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:flex"
       aria-label="Open command palette"

@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import { FileSearch } from 'lucide-react';
 import { PageHeader } from '@/components/layout/page-header';
 import { ExtractionViewer } from '@/components/extractions/extraction-viewer';
-import { Skeleton } from '@/components/ui/skeleton';
+import { DetailSkeleton } from '@/components/shared/skeletons';
 
 async function JobContent({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -20,7 +20,7 @@ async function JobContent({ params }: { params: Promise<{ id: string }> }) {
 
 export default function ExtractionJobPage({ params }: { params: Promise<{ id: string }> }) {
   return (
-    <Suspense fallback={<Skeleton className="h-96 max-w-4xl" />}>
+    <Suspense fallback={<DetailSkeleton className="max-w-4xl" />}>
       <JobContent params={params} />
     </Suspense>
   );

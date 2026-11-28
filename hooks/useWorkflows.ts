@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { fireConfetti } from '@/components/shared/confetti';
 import { api } from '@/lib/api';
 import { getErrorMessage } from '@/lib/errors';
 import type { Workflow, WorkflowInput } from '@/types/workflow';
@@ -27,6 +28,7 @@ export function useCreateWorkflow() {
     mutationFn: async (data: WorkflowInput) => (await api.post<Workflow>('/workflows', data)).data,
     onSuccess: (wf) => {
       toast.success(`Workflow "${wf.name}" created`);
+      fireConfetti();
       queryClient.invalidateQueries({ queryKey: ['workflows'] });
       router.push('/workflows');
     },
@@ -38,7 +40,8 @@ export function useUpdateWorkflow(id: string) {
   const queryClient = useQueryClient();
   const router = useRouter();
   return useMutation({
-    mutationFn: async (data: WorkflowInput) => (await api.patch<Workflow>(`/workflows/${id}`, data)).data,
+    mutationFn: async (data: WorkflowInput) =>
+      (await api.patch<Workflow>(`/workflows/${id}`, data)).data,
     onSuccess: (wf) => {
       toast.success(`Workflow "${wf.name}" saved`);
       queryClient.invalidateQueries({ queryKey: ['workflows'] });
@@ -67,7 +70,8 @@ export function useDeleteWorkflow() {
 export function useRunWorkflow() {
   const router = useRouter();
   return useMutation({
-    mutationFn: async (id: string) => (await api.post<{ runId: string }>(`/workflows/${id}/run`)).data,
+    mutationFn: async (id: string) =>
+      (await api.post<{ runId: string }>(`/workflows/${id}/run`)).data,
     onSuccess: ({ runId }) => {
       toast.success(`Run ${runId} started`);
       router.push(`/runs/${runId}`);

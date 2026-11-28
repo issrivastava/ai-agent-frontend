@@ -37,8 +37,13 @@ type DataTableProps<TData, TValue> = {
   isError?: boolean;
   onRetry?: () => void;
   searchPlaceholder?: string;
+  /** Controlled search text — pass together with `onSearchChange` (e.g. to sync to the URL). */
+  search?: string;
+  onSearchChange?: (value: string) => void;
   emptyTitle?: string;
   emptyDescription?: string;
+  /** Extra content inside the empty state — e.g. suggestion chips. */
+  emptyAction?: React.ReactNode;
   pageSize?: number;
   toolbar?: React.ReactNode; // extra filters/buttons rendered next to the search box
   onRowClick?: (row: TData) => void;
@@ -51,14 +56,21 @@ export function DataTable<TData, TValue>({
   isError,
   onRetry,
   searchPlaceholder = 'Search…',
+  search,
+  onSearchChange,
   emptyTitle = 'No results',
   emptyDescription = 'Try changing your search or filters.',
+  emptyAction,
   pageSize = 10,
   toolbar,
   onRowClick,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [globalFilter, setGlobalFilter] = useState('');
+  const [internalSearch, setInternalSearch] = useState('');
+  const isControlled = search !== undefined && onSearchChange !== undefined;
+  const globalFilter = isControlled ? search : internalSearch;
+  const setGlobalFilter = (value: string) =>
+    isControlled ? onSearchChange(value) : setInternalSearch(value);
 
   // TanStack Table returns unmemoizable functions; the React Compiler skips this component, which is fine.
   // eslint-disable-next-line react-hooks/incompatible-library
@@ -82,7 +94,7 @@ export function DataTable<TData, TValue>({
     <div className="space-y-4">
       <div className="flex flex-wrap items-center gap-2">
         <div className="relative w-full max-w-sm">
-          <Search className="absolute left-2.5 top-2.5 size-4 text-muted-foreground" />
+          <Search className="absolute top-2.5 left-2.5 size-4 text-muted-foreground" />
           <Input
             value={globalFilter}
             onChange={(e) => setGlobalFilter(e.target.value)}
@@ -134,7 +146,9 @@ export function DataTable<TData, TValue>({
 
         {!isLoading && isError && <ErrorState message="Could not load data." onRetry={onRetry} />}
         {!isLoading && !isError && rows.length === 0 && (
-          <EmptyState title={emptyTitle} description={emptyDescription} />
+          <EmptyState title={emptyTitle} description={emptyDescription}>
+            {emptyAction}
+          </EmptyState>
         )}
       </div>
 

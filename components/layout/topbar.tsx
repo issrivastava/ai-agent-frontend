@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { CircleHelp, Menu, Search } from 'lucide-react';
+import { AssistantChat } from '@/components/chat/assistant-chat';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { LogoMark } from '@/components/brand/logo';
@@ -12,6 +13,7 @@ import { useUiStore } from '@/lib/ui-store';
 import { CommandPalette, CommandPaletteTrigger } from './command-palette';
 import { HelpDialog } from './help-dialog';
 import { NotificationsBell } from './notifications-bell';
+import { ProductTour } from '@/components/onboarding/product-tour';
 import { SidebarNav } from './sidebar-nav';
 import { ThemeToggle } from './theme-toggle';
 import { UserMenu } from './user-menu';
@@ -118,6 +120,8 @@ export function Topbar() {
 
       <CommandPalette />
       <HelpDialog />
+      <ProductTour />
+      <AssistantChat />
     </>
   );
 }

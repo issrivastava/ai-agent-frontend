@@ -85,9 +85,7 @@ export function ChangePasswordDialog({ open, onOpenChange }: Props) {
         </DialogHeader>
 
         <form
-          onSubmit={handleSubmit((values) =>
-            changePassword.mutate(values, { onSuccess: close }),
-          )}
+          onSubmit={handleSubmit((values) => changePassword.mutate(values, { onSuccess: close }))}
           noValidate
           className="space-y-4"
         >
@@ -110,7 +108,11 @@ export function ChangePasswordDialog({ open, onOpenChange }: Props) {
                     type="button"
                     onClick={() => setVisible((v) => ({ ...v, [f.name]: !v[f.name] }))}
                     className="absolute top-1/2 right-2 flex size-7 -translate-y-1/2 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                    aria-label={visible[f.name] ? `Hide ${f.label.toLowerCase()}` : `Show ${f.label.toLowerCase()}`}
+                    aria-label={
+                      visible[f.name]
+                        ? `Hide ${f.label.toLowerCase()}`
+                        : `Show ${f.label.toLowerCase()}`
+                    }
                   >
                     {visible[f.name] ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                   </button>

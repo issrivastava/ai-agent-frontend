@@ -5,12 +5,15 @@ export function FilterSelect({
   value,
   onChange,
   options,
+  allLabel,
   className,
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
   options: readonly string[];
+  /** Text for the "no filter" option. Defaults to "All {label}". */
+  allLabel?: string;
   className?: string;
 }) {
   return (
@@ -23,7 +26,7 @@ export function FilterSelect({
         className,
       )}
     >
-      <option value="all">All {label.toLowerCase()}</option>
+      <option value="all">{allLabel ?? `All ${label.toLowerCase()}`}</option>
       {options.map((option) => (
         <option key={option} value={option}>
           {option}

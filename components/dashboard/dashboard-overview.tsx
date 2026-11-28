@@ -8,12 +8,16 @@ import {
   FileSearch,
   Inbox,
   Play,
+  Rocket,
   ShieldAlert,
   Ticket,
   TrendingUp,
   Workflow as WorkflowIcon,
 } from 'lucide-react';
+import { EmptyState } from '@/components/shared/empty-state';
+import { ErrorState } from '@/components/shared/error-state';
 import { StatusBadge } from '@/components/shared/status-badge';
+import { SuggestionChips } from '@/components/shared/suggestion-chips';
 import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -23,6 +27,7 @@ import { useTickets } from '@/hooks/useTickets';
 import { useWorkflows } from '@/hooks/useWorkflows';
 import { extractionStats, runStats, ticketStats } from '@/lib/dashboard';
 import { cn } from '@/lib/utils';
+import { useUiStore } from '@/lib/ui-store';
 import { useAuth } from '@/providers/auth-provider';
 import { KpiCard } from './kpi-card';
 import { OnboardingChecklist } from './onboarding-checklist';
@@ -70,6 +75,7 @@ function ChartCard({
 
 export function DashboardOverview() {
   const { can } = useAuth();
+  const setTourOpen = useUiStore((s) => s.setTourOpen);
   const tickets = useTickets({});
   const runs = useRuns();
   const extractions = useExtractions();
@@ -190,7 +196,20 @@ export function DashboardOverview() {
             </Link>
           }
         >
-          {t && <TicketsByStatusChart data={t.byStatus} />}
+          {t ? (
+            t.total > 0 ? (
+              <TicketsByStatusChart data={t.byStatus} />
+            ) : (
+              <EmptyState
+                compact
+                icon={Ticket}
+                title="No tickets yet"
+                description="Once agents start triaging, every request will be sorted here by status."
+              />
+            )
+          ) : tickets.isError ? (
+            <ErrorState message="Could not load tickets." onRetry={() => tickets.refetch()} />
+          ) : null}
         </ChartCard>
 
         <OnboardingChecklist />
@@ -249,7 +268,11 @@ export function DashboardOverview() {
               <Skeleton className="h-40 w-full" />
             ) : t ? (
               <TicketPriorityBreakdown data={t.byPriority} />
-            ) : null}
+            ) : tickets.isError ? (
+              <ErrorState message="Could not load tickets." onRetry={() => tickets.refetch()} />
+            ) : (
+              <EmptyState compact icon={Ticket} title="No priority data yet" />
+            )}
           </CardContent>
         </Card>
       </div>
@@ -296,7 +319,23 @@ export function DashboardOverview() {
                 })}
               </ul>
             ) : (
-              <p className="py-6 text-center text-sm text-muted-foreground">No runs yet.</p>
+              <EmptyState
+                compact
+                icon={Inbox}
+                title="No runs yet"
+                description="Start a workflow and its execution history will appear here."
+              >
+                <SuggestionChips
+                  suggestions={[
+                    {
+                      label: 'Take a product tour',
+                      icon: Rocket,
+                      onClick: () => setTourOpen(true),
+                    },
+                    { label: 'Run a workflow', icon: Play, href: '/workflows' },
+                  ]}
+                />
+              </EmptyState>
             )}
           </CardContent>
         </Card>
@@ -313,6 +352,24 @@ export function DashboardOverview() {
           <CardContent className="space-y-4">
             {workflows.isLoading ? (
               <Skeleton className="h-28 w-full" />
+            ) : workflows.isError ? (
+              <ErrorState message="Could not load workflows." onRetry={() => workflows.refetch()} />
+            ) : (workflows.data?.length ?? 0) === 0 ? (
+              <EmptyState
+                compact
+                icon={WorkflowIcon}
+                title="No workflows yet"
+                description="Build a playbook that chains agents, tools, and approval gates."
+                action={
+                  <Link
+                    href="/workflows"
+                    className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'gap-1')}
+                  >
+                    Go to workflows
+                    <ArrowRight className="size-3" />
+                  </Link>
+                }
+              />
             ) : (
               <>
                 <div>

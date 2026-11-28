@@ -1,13 +1,13 @@
 import { Suspense } from 'react';
 import { DashboardGreeting } from '@/components/dashboard/dashboard-greeting';
 import { DashboardOverview } from '@/components/dashboard/dashboard-overview';
-import { Skeleton } from '@/components/ui/skeleton';
+import { StatGridSkeleton } from '@/components/shared/skeletons';
 
 export default function DashboardPage() {
   return (
     <>
       <DashboardGreeting />
-      <Suspense fallback={<Skeleton className="h-96 w-full" />}>
+      <Suspense fallback={<StatGridSkeleton />}>
         <DashboardOverview />
       </Suspense>
     </>

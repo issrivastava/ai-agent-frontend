@@ -4,7 +4,10 @@ import { NewWorkflow } from '@/components/workflows/new-workflow';
 export default function NewWorkflowPage() {
   return (
     <>
-      <PageHeader title="New workflow" description="Define the agents that handle this workflow, in order." />
+      <PageHeader
+        title="New workflow"
+        description="Define the agents that handle this workflow, in order."
+      />
       <NewWorkflow />
     </>
   );

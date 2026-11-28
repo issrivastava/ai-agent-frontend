@@ -3,10 +3,12 @@
 import { useMemo, useState } from 'react';
 import { ConfirmDialog } from '@/components/shared/confirm-dialog';
 import { DataTable } from '@/components/shared/data-table';
+import { SuggestionChips } from '@/components/shared/suggestion-chips';
 import { StartRunDialog } from '@/components/workflows/start-run-dialog';
 import { useDeleteWorkflow, useWorkflows } from '@/hooks/useWorkflows';
 import { useAuth } from '@/providers/auth-provider';
 import type { Workflow } from '@/types/workflow';
+import { Plus } from 'lucide-react';
 import { getWorkflowColumns } from './workflow-columns';
 
 export function WorkflowsTable() {
@@ -45,6 +47,13 @@ export function WorkflowsTable() {
             ? 'Create your first workflow to start automating.'
             : 'No workflows have been set up yet.'
         }
+        emptyAction={
+          canManage ? (
+            <SuggestionChips
+              suggestions={[{ label: 'New workflow', icon: Plus, href: '/workflows/new' }]}
+            />
+          ) : undefined
+        }
       />
 
       <StartRunDialog
@@ -62,8 +71,7 @@ export function WorkflowsTable() {
         destructive
         loading={remove.isPending}
         onConfirm={() =>
-          deleteTarget &&
-          remove.mutate(deleteTarget.id, { onSuccess: () => setDeleteTarget(null) })
+          deleteTarget && remove.mutate(deleteTarget.id, { onSuccess: () => setDeleteTarget(null) })
         }
       />
     </>

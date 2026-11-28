@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#b33b75" />
+    <title>You're offline · AI Agent Platform</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family:
+          system-ui,
+          -apple-system,
+          'Segoe UI',
+          sans-serif;
+        background: #fdf7f7;
+        color: #35161f;
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #140c0d;
+          color: #f2eaea;
+        }
+      }
+      .card {
+        max-width: 22rem;
+        margin: 1rem;
+        padding: 2rem;
+        text-align: center;
+        border-radius: 1rem;
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(179, 59, 117, 0.15);
+        box-shadow: 0 10px 30px rgba(179, 59, 117, 0.08);
+      }
+      @media (prefers-color-scheme: dark) {
+        .card {
+          background: rgba(255, 255, 255, 0.04);
+          border-color: rgba(234, 123, 167, 0.2);
+        }
+      }
+      .dot {
+        width: 3rem;
+        height: 3rem;
+        margin: 0 auto 1rem;
+        border-radius: 0.75rem;
+        background: linear-gradient(135deg, #b33b75, #ea7ba7);
+      }
+      h1 {
+        margin: 0 0 0.5rem;
+        font-size: 1.125rem;
+      }
+      p {
+        margin: 0 0 1.25rem;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        opacity: 0.75;
+      }
+      button {
+        font: inherit;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #fff;
+        background: linear-gradient(135deg, #b33b75, #ea7ba7);
+        border: 0;
+        border-radius: 999px;
+        padding: 0.5rem 1.25rem;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <div class="dot" aria-hidden="true"></div>
+      <h1>You&apos;re offline</h1>
+      <p>
+        This page needs a connection. Your workspace will be back as soon as you&apos;re online.
+      </p>
+      <button type="button" onclick="location.reload()">Try again</button>
+    </main>
+  </body>
+</html>

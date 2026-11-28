@@ -2,8 +2,8 @@ import { Suspense } from 'react';
 import { Bot, MousePointerClick, Repeat2, Ticket } from 'lucide-react';
 import { PageGuide } from '@/components/layout/page-guide';
 import { PageHeader } from '@/components/layout/page-header';
+import { TableContentSkeleton } from '@/components/shared/skeletons';
 import { TicketsTable } from '@/components/tickets/tickets-table';
-import { Skeleton } from '@/components/ui/skeleton';
 
 export default function TicketsPage() {
   return (
@@ -32,7 +32,7 @@ export default function TicketsPage() {
           },
         ]}
       />
-      <Suspense fallback={<Skeleton className="h-96 w-full" />}>
+      <Suspense fallback={<TableContentSkeleton columns={6} />}>
         <TicketsTable />
       </Suspense>
     </>

@@ -3,7 +3,7 @@ import { Activity, CheckCheck, ShieldCheck, Workflow } from 'lucide-react';
 import { PageGuide } from '@/components/layout/page-guide';
 import { PageHeader } from '@/components/layout/page-header';
 import { RunsTable } from '@/components/runs/runs-table';
-import { Skeleton } from '@/components/ui/skeleton';
+import { TableContentSkeleton } from '@/components/shared/skeletons';
 
 export default function RunsPage() {
   return (
@@ -32,7 +32,7 @@ export default function RunsPage() {
           },
         ]}
       />
-      <Suspense fallback={<Skeleton className="h-96 w-full" />}>
+      <Suspense fallback={<TableContentSkeleton columns={6} />}>
         <RunsTable />
       </Suspense>
     </>

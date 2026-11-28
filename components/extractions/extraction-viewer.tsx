@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import type { ColumnDef } from '@tanstack/react-table';
 import { ArrowLeft, Download, Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 import { DataTable, SortableHeader } from '@/components/shared/data-table';
 import { ErrorState } from '@/components/shared/error-state';
 import { StatusBadge } from '@/components/shared/status-badge';
@@ -30,7 +31,9 @@ const columns: ColumnDef<ExtractedField>[] = [
     cell: ({ row }) => {
       const c = row.original.confidence;
       return (
-        <span className={cn(c < LOW_CONFIDENCE && 'font-medium text-amber-600 dark:text-amber-400')}>
+        <span
+          className={cn(c < LOW_CONFIDENCE && 'font-medium text-amber-600 dark:text-amber-400')}
+        >
           {Math.round(c * 100)}%{c < LOW_CONFIDENCE && ' · review'}
         </span>
       );
@@ -65,7 +68,10 @@ export function ExtractionViewer({ id }: { id: string }) {
 
   return (
     <div className="max-w-4xl space-y-6">
-      <Link href="/extractions" className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), '-ml-3')}>
+      <Link
+        href="/extractions"
+        className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), '-ml-3')}
+      >
         <ArrowLeft className="size-4" />
         All jobs
       </Link>
@@ -105,9 +111,14 @@ export function ExtractionViewer({ id }: { id: string }) {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() =>
-                  downloadFile(`${baseName}.csv`, fieldsToCsv(job.fields), 'text/csv;charset=utf-8')
-                }
+                onClick={() => {
+                  downloadFile(
+                    `${baseName}.csv`,
+                    fieldsToCsv(job.fields),
+                    'text/csv;charset=utf-8',
+                  );
+                  toast.success('CSV downloaded');
+                }}
               >
                 <Download className="size-4" />
                 CSV
@@ -115,20 +126,27 @@ export function ExtractionViewer({ id }: { id: string }) {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() =>
+                onClick={() => {
                   downloadFile(
                     `${baseName}.json`,
                     JSON.stringify(job.fields, null, 2),
                     'application/json',
-                  )
-                }
+                  );
+                  toast.success('JSON downloaded');
+                }}
               >
                 <Download className="size-4" />
                 JSON
               </Button>
             </div>
           </div>
-          <DataTable columns={columns} data={job.fields} searchPlaceholder="Search fields…" />
+          <DataTable
+            columns={columns}
+            data={job.fields}
+            searchPlaceholder="Search fields…"
+            emptyTitle="No fields extracted"
+            emptyDescription="This document finished without any fields. Check the scan quality, or clear your search to see everything."
+          />
         </div>
       )}
     </div>

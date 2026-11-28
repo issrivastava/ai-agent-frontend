@@ -24,7 +24,9 @@ export function UsersTable() {
         cell: ({ row }) => (
           <span className="font-medium">
             {row.original.name}
-            {row.original.id === me.id && <span className="ml-2 text-xs text-muted-foreground">(you)</span>}
+            {row.original.id === me.id && (
+              <span className="ml-2 text-xs text-muted-foreground">(you)</span>
+            )}
           </span>
         ),
       },
@@ -61,7 +63,8 @@ export function UsersTable() {
       isError={isError}
       onRetry={() => refetch()}
       searchPlaceholder="Search users…"
-      emptyTitle="No users"
+      emptyTitle="No users found"
+      emptyDescription="No teammates match your search. Clear it to see everyone with access."
     />
   );
 }

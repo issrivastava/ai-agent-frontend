@@ -1,8 +1,8 @@
 import { Suspense } from 'react';
 import { Workflow } from 'lucide-react';
 import { PageHeader } from '@/components/layout/page-header';
+import { FormSkeleton } from '@/components/shared/skeletons';
 import { EditWorkflow } from '@/components/workflows/edit-workflow';
-import { Skeleton } from '@/components/ui/skeleton';
 
 async function EditContent({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -17,7 +17,7 @@ export default function EditWorkflowPage({ params }: { params: Promise<{ id: str
         title="Edit workflow"
         description="Changes apply to future runs."
       />
-      <Suspense fallback={<Skeleton className="h-96 max-w-3xl" />}>
+      <Suspense fallback={<FormSkeleton />}>
         <EditContent params={params} />
       </Suspense>
     </>

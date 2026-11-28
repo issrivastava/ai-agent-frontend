@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useSyncExternalStore } from 'react';
+import { useEffect, useRef, useSyncExternalStore } from 'react';
 import {
   ArrowRight,
   BookOpen,
@@ -9,10 +9,12 @@ import {
   Circle,
   FileSearch,
   Play,
+  Route,
   Sparkles,
   Workflow,
   X,
 } from 'lucide-react';
+import { fireConfetti } from '@/components/shared/confetti';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useExtractions } from '@/hooks/useExtractions';
 import { useRuns } from '@/hooks/useRun';
@@ -51,6 +53,7 @@ function setStoredFlag(key: string, value: boolean) {
 export function OnboardingChecklist() {
   const { can } = useAuth();
   const setHelpOpen = useUiStore((s) => s.setHelpOpen);
+  const setTourOpen = useUiStore((s) => s.setTourOpen);
   const workflows = useWorkflows();
   const runs = useRuns();
   const extractions = useExtractions();
@@ -102,6 +105,13 @@ export function OnboardingChecklist() {
 
   const completed = tasks.filter((task) => task.done).length;
   const percent = Math.round((completed / tasks.length) * 100);
+
+  // Celebrate the moment the checklist flips to fully complete (not on mount).
+  const prevCompleted = useRef(completed);
+  useEffect(() => {
+    if (prevCompleted.current < tasks.length && completed === tasks.length) fireConfetti();
+    prevCompleted.current = completed;
+  }, [completed, tasks.length]);
 
   if (dismissed) return null;
 
@@ -195,15 +205,25 @@ export function OnboardingChecklist() {
           </p>
         )}
 
-        {can('workflows:run') && (
-          <Link
-            href="/workflows"
+        <div className="grid gap-2 sm:grid-cols-2">
+          <button
+            type="button"
+            onClick={() => setTourOpen(true)}
             className="flex items-center justify-center gap-1.5 rounded-lg border border-brand-1/20 bg-brand-soft px-3 py-2 text-xs font-medium text-brand-1 transition-colors hover:brightness-[0.98]"
           >
-            <Play className="size-3.5" />
-            Start your first run
-          </Link>
-        )}
+            <Route className="size-3.5" />
+            Take the tour
+          </button>
+          {can('workflows:run') && (
+            <Link
+              href="/workflows"
+              className="flex items-center justify-center gap-1.5 rounded-lg border bg-card px-3 py-2 text-xs font-medium transition-colors hover:bg-muted"
+            >
+              <Play className="size-3.5" />
+              Start your first run
+            </Link>
+          )}
+        </div>
       </CardContent>
     </Card>
   );

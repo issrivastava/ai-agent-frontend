@@ -6,7 +6,13 @@ import type { Permission } from '@/lib/permissions';
 import { useAuth } from '@/providers/auth-provider';
 
 /** Renders children only if the user has the permission; renders nothing otherwise. */
-export function Can({ permission, children }: { permission: Permission; children: React.ReactNode }) {
+export function Can({
+  permission,
+  children,
+}: {
+  permission: Permission;
+  children: React.ReactNode;
+}) {
   const { can } = useAuth();
   return can(permission) ? <>{children}</> : null;
 }
